@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'app_bottom_navigation_bar.dart';
+import 'home_app_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -47,60 +47,7 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'CircleChat',
-          style: GoogleFonts.poppins(
-            fontWeight: FontWeight.w600,
-            color: Theme.of(context).textTheme.bodyLarge?.color,
-          ),
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.camera_alt_outlined),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: const Icon(Icons.search_sharp),
-            onPressed: () {},
-          ),
-          PopupMenuButton<String>(
-            position: PopupMenuPosition.under,
-            offset: const Offset(0, kToolbarHeight * .2),
-            onSelected: (String result) {
-              switch (result) {
-                case 'New Group':
-                  break;
-                case 'New Community':
-                  break;
-                case 'Starred Messages':
-                  break;
-                case 'Settings':
-                  break;
-              }
-            },
-            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-              const PopupMenuItem<String>(
-                value: 'New Group',
-                child: Text('New Group'),
-              ),
-              const PopupMenuItem<String>(
-                value: 'New Community',
-                child: Text('New Community'),
-              ),
-              const PopupMenuItem<String>(
-                value: 'Starred Messages',
-                child: Text('Starred Messages'),
-              ),
-              const PopupMenuItem<String>(
-                value: 'Settings',
-                child: Text('Settings'),
-              ),
-            ],
-            icon: const Icon(Icons.more_vert),
-          ),
-        ],
-      ),
+      appBar: const HomeAppBar(),
       body: PageView(
         controller: _pageController,
         onPageChanged: _onPageChanged,

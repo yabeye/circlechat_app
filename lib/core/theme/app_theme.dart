@@ -20,12 +20,16 @@ ThemeData lightTheme = ThemeData(
       headlineLarge: const TextStyle(
         fontSize: 32,
         fontWeight: FontWeight.bold,
-        color: AppColors.textLight, // Or Colors.white, if that's what you want
+        color: AppColors.textLight,
       ),
       bodyMedium: TextStyle(
-        // Added this
         fontSize: 16,
-        color: AppColors.textLight.withOpacity(0.7), // Or Colors.white70
+        color: AppColors.textLight.withOpacity(0.7),
+      ),
+      bodySmall: TextStyle(
+        fontWeight: FontWeight.w500,
+        fontSize: 14,
+        color: AppColors.textLight.withOpacity(0.7),
       ),
     ),
   ),

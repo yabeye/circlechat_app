@@ -1,0 +1,160 @@
+import 'package:circlechat_app/core/utils/ui_helpers.dart';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:circlechat_app/core/theme/app_colors.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+
+class EditProfileScreen extends StatefulWidget {
+  const EditProfileScreen({super.key});
+
+  @override
+  EditProfileScreenState createState() => EditProfileScreenState();
+}
+
+class EditProfileScreenState extends State<EditProfileScreen> {
+  String _name = '';
+  final _namePlaceholder = 'Enter your name';
+  String _bio = '';
+  final _bioPlaceholder = 'Enter your bio';
+  File? _profileImage;
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _pickImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _profileImage = File(pickedFile.path);
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Profile',
+          style: GoogleFonts.poppins(
+            fontWeight: FontWeight.w600,
+            color: Theme.of(context).textTheme.bodyLarge?.color,
+          ),
+        ),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(vertical: 24.0),
+        child: Column(
+          children: [
+            GestureDetector(
+              onTap: _pickImage,
+              child: Stack(
+                alignment: Alignment.bottomRight,
+                children: [
+                  CircleAvatar(
+                    radius: 70,
+                    backgroundColor: AppColors.disabled.withAlpha(128),
+                    backgroundImage: _profileImage != null
+                        ? FileImage(_profileImage!)
+                        : null,
+                    child: _profileImage == null
+                        ? const Icon(
+                            Icons.person,
+                            size: 100,
+                            color: Colors.grey,
+                          )
+                        : null,
+                  ),
+                  Container(
+                    decoration: const BoxDecoration(
+                      color: AppColors.primary,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsets.all(12.0),
+                      child: Icon(
+                        Icons.camera_alt_outlined,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 32),
+            ListTile(
+              leading: const Icon(Icons.person_outline),
+              title: Text(
+                'Name',
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+              subtitle: Text(
+                _name.isEmpty ? _namePlaceholder : _name,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+              onTap: () => UIHelpers.showEditBottomSheet(
+                context,
+                'Name',
+                _name,
+                _namePlaceholder,
+                (value) {
+                  setState(() {
+                    _name = value;
+                  });
+                },
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.info_outline),
+              title: Text(
+                'Bio',
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+              subtitle: Text(
+                _bio.isEmpty ? _bioPlaceholder : _bio,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+              onTap: () => UIHelpers.showEditBottomSheet(
+                context,
+                'Bio',
+                _bio,
+                _bioPlaceholder,
+                (value) {
+                  setState(() {
+                    _bio = value;
+                  });
+                },
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.phone),
+              title: Text(
+                'Phone',
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+              subtitle: Text(
+                'Your Phone Number',
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+              onTap: () => UIHelpers.showEditBottomSheet(
+                context,
+                'Phone',
+                'Your Phone Number',
+                'Enter your phone number',
+                (value) {
+                  setState(() {
+                    _bio = value;
+                  });
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

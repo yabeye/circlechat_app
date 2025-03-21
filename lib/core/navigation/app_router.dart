@@ -1,6 +1,7 @@
 import 'package:circlechat_app/presentation/screens/auth/otp_screen.dart';
 import 'package:circlechat_app/presentation/screens/auth/phone_auth_screen.dart';
 import 'package:circlechat_app/presentation/screens/home/home_screen.dart';
+import 'package:circlechat_app/presentation/screens/profile/edit_profile_screen.dart';
 import 'package:circlechat_app/presentation/screens/walkthrough/walkthrough_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:circlechat_app/presentation/screens/splash/splash_screen.dart';
@@ -10,11 +11,12 @@ class AppRouter {
   static const String walkthrough = '/walkthrough';
   static const String phoneAuth = '/phone-auth';
   static const String otpAuth = '/otp-auth';
+  static const String editProfile = '/edit-profile';
   static const String home = '/';
   static const String chat = '/chat/:chatId';
 
   static GoRouter router = GoRouter(
-    initialLocation: home,
+    initialLocation: editProfile,
     routes: [
       GoRoute(
         path: splash,
@@ -31,6 +33,10 @@ class AppRouter {
       GoRoute(
         path: otpAuth,
         builder: (context, state) => const OtpScreen(),
+      ),
+      GoRoute(
+        path: editProfile,
+        builder: (context, state) => const EditProfileScreen(),
       ),
       GoRoute(
         path: home,
