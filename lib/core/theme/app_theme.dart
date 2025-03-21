@@ -9,8 +9,9 @@ ThemeData lightTheme = ThemeData(
   scaffoldBackgroundColor: AppColors.backgroundLight,
   cardColor: AppColors.cardLight,
   appBarTheme: const AppBarTheme(
-    backgroundColor: AppColors.primary,
+    backgroundColor: AppColors.textDark,
     foregroundColor: Colors.white,
+    iconTheme: IconThemeData(color: AppColors.textLight),
   ),
   textTheme: GoogleFonts.robotoTextTheme(
     TextTheme(
@@ -38,6 +39,9 @@ ThemeData lightTheme = ThemeData(
     elevation: 2,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
   ),
+  iconTheme: const IconThemeData(
+    color: AppColors.textLight,
+  ),
   floatingActionButtonTheme: FloatingActionButtonThemeData(
     backgroundColor: AppColors.primary,
     foregroundColor: Colors.white,
@@ -52,15 +56,6 @@ ThemeData lightTheme = ThemeData(
     ),
   ),
   navigationBarTheme: NavigationBarThemeData(
-    // backgroundColor: AppColors.primary,
-    // indicatorColor: Colors.white,
-    // iconTheme: MaterialStateProperty.all(
-    //   IconThemeData(
-    //     size: 32,
-    //     color: AppColors.textLight,
-    //   ),
-    // ),
-
     labelTextStyle: WidgetStateProperty.all(
       GoogleFonts.roboto(
         fontSize: 16,
@@ -80,6 +75,7 @@ ThemeData darkTheme = ThemeData(
   appBarTheme: AppBarTheme(
     backgroundColor: Colors.grey[850],
     foregroundColor: Colors.white,
+    iconTheme: const IconThemeData(color: AppColors.textDark),
   ),
   textTheme: GoogleFonts.robotoTextTheme(
     TextTheme(
@@ -112,6 +108,15 @@ ThemeData darkTheme = ThemeData(
     foregroundColor: Colors.white,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(100),
+    ),
+  ),
+  navigationBarTheme: NavigationBarThemeData(
+    labelTextStyle: WidgetStateProperty.all(
+      GoogleFonts.roboto(
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+        color: AppColors.textDark,
+      ),
     ),
   ),
 );

@@ -1,4 +1,3 @@
-// lib/presentation/screens/auth/otp_screen.dart
 import 'package:circlechat_app/core/navigation/app_router.dart';
 import 'package:circlechat_app/core/navigation/navigation_helper.dart';
 import 'package:circlechat_app/presentation/cubit/auth/auth_cubit.dart';
