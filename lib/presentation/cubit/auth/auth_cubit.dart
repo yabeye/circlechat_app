@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:circlechat_app/services/firebase_service.dart';
 import 'package:circlechat_app/core/locator.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 part 'auth_state.dart';
 
@@ -13,11 +14,31 @@ class AuthCubit extends Cubit<AuthState> {
         _logger = getIt<LoggingService>(),
         super(AuthInitial());
 
+  PhoneNumber? selectedPhoneNumber;
+
   final FirebaseService _firebaseService;
   final LoggingService _logger;
 
-  Future<void> sendVerificationCode(String phoneNumber) async {
-    emit(AuthLoading());
+  void setPhoneNumber(PhoneNumber phoneNumber) {
+    selectedPhoneNumber = phoneNumber;
+    emit(PhoneNumberChanged(phoneNumber));
+  }
+
+  bool get isValidPhoneNumber =>
+      (selectedPhoneNumber?.phoneNumber ?? '').length > 6;
+
+  Future<void> sendVerificationCode() async {
+    final String phoneNumber = selectedPhoneNumber?.phoneNumber ?? '';
+    if (phoneNumber.isEmpty) {
+      emit(AuthError('Please enter a valid phone number.'));
+      return;
+    }
+
+    emit(AuthLoading(selectedPhoneNumber));
+    await Future.delayed(const Duration(seconds: 5));
+    emit(PhoneNumberChanged(selectedPhoneNumber!));
+
+    return;
     try {
       await _firebaseService.sendVerificationCode(
         phoneNumber,
@@ -47,7 +68,7 @@ class AuthCubit extends Cubit<AuthState> {
     String smsCode,
     String verificationId,
   ) async {
-    emit(AuthLoading());
+    emit(AuthLoading(selectedPhoneNumber));
     try {
       final userCredential = await _firebaseService.signInWithPhoneNumber(
         smsCode,
@@ -68,7 +89,7 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> signOut() async {
-    emit(AuthLoading());
+    emit(AuthLoading(selectedPhoneNumber));
     try {
       await _firebaseService.signOut();
       emit(AuthInitial());

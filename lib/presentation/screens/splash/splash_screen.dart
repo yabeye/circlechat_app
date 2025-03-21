@@ -25,7 +25,7 @@ class SplashScreen extends StatelessWidget {
       // ignore: use_build_context_synchronously
       NavigationHelper.navigateTo(
         context,
-        AppRouter.walkthrough,
+        AppRouter.phoneAuth,
         replace: true,
       );
     });

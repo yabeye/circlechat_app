@@ -38,6 +38,19 @@ ThemeData lightTheme = ThemeData(
     elevation: 2,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
   ),
+  floatingActionButtonTheme: FloatingActionButtonThemeData(
+    backgroundColor: AppColors.primary,
+    foregroundColor: Colors.white,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(100),
+    ),
+  ),
+  inputDecorationTheme: InputDecorationTheme(
+    labelStyle: GoogleFonts.roboto(
+      fontSize: 12,
+      color: AppColors.textLight.withValues(alpha: 0.7),
+    ),
+  ),
 );
 
 ThemeData darkTheme = ThemeData(
@@ -74,5 +87,13 @@ ThemeData darkTheme = ThemeData(
   cardTheme: CardTheme(
     elevation: 2,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+  ),
+  // FloatingActionButtonTheme
+  floatingActionButtonTheme: FloatingActionButtonThemeData(
+    backgroundColor: AppColors.primary,
+    foregroundColor: Colors.white,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(100),
+    ),
   ),
 );

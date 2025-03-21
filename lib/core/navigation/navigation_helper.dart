@@ -17,7 +17,7 @@ class NavigationHelper {
       });
     }
     if (replace) {
-      Navigator.pushReplacementNamed(context, routeName);
+      context.go(path);
     } else {
       context.go(path);
     }

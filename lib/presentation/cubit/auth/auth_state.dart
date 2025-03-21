@@ -4,7 +4,10 @@ abstract class AuthState {}
 
 class AuthInitial extends AuthState {}
 
-class AuthLoading extends AuthState {}
+class AuthLoading extends AuthState {
+  AuthLoading(this.phoneNumber);
+  final PhoneNumber? phoneNumber;
+}
 
 class AuthSuccess extends AuthState {
   AuthSuccess(this.user);
@@ -14,11 +17,17 @@ class AuthSuccess extends AuthState {
 
 class AuthError extends AuthState {
   AuthError(this.message);
+
   final String message;
 }
 
 class VerificationCodeSent extends AuthState {
-  VerificationCodeSent(this.verificationId);
-
   final String verificationId;
+
+  VerificationCodeSent(this.verificationId);
+}
+
+class PhoneNumberChanged extends AuthState {
+  PhoneNumberChanged(this.phoneNumber);
+  final PhoneNumber phoneNumber;
 }

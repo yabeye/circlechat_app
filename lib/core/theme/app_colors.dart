@@ -10,5 +10,5 @@ class AppColors {
   static const Color cardDark = Color(0xFF424242);
   static const Color textLight = Colors.black87;
   static const Color textDark = Colors.white70;
-  static const Color disabled = Colors.grey;
+  static const Color disabled = Color(0xFFBDBDBD);
 }
