@@ -22,6 +22,11 @@ ThemeData lightTheme = ThemeData(
         fontWeight: FontWeight.bold,
         color: AppColors.textLight,
       ),
+      headlineSmall: const TextStyle(
+        fontSize: 21,
+        fontWeight: FontWeight.bold,
+        color: AppColors.textLight,
+      ),
       bodyMedium: TextStyle(
         fontSize: 16,
         color: AppColors.textLight.withOpacity(0.7),
@@ -89,6 +94,11 @@ ThemeData darkTheme = ThemeData(
         fontSize: 32,
         fontWeight: FontWeight.bold,
         color: AppColors.textLight, // Or Colors.white, if that's what you want
+      ),
+      headlineSmall: const TextStyle(
+        fontSize: 21,
+        fontWeight: FontWeight.bold,
+        color: AppColors.textDark,
       ),
       bodyMedium: TextStyle(
         fontSize: 16,

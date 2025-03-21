@@ -2,7 +2,6 @@ import 'package:circlechat_app/core/utils/ui_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:circlechat_app/core/theme/app_colors.dart';
-import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 class EditProfileScreen extends StatefulWidget {
@@ -18,13 +17,21 @@ class EditProfileScreenState extends State<EditProfileScreen> {
   String _bio = '';
   final _bioPlaceholder = 'Enter your bio';
   File? _profileImage;
-  final ImagePicker _picker = ImagePicker();
 
-  Future<void> _pickImage() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
+  Future<void> _chooseImage() async {
+    final pickedImage = await UIHelpers.pickImage(
+      context,
+      title: 'Profile Photo',
+      actionIcon: IconButton(
+        icon: const Icon(
+          Icons.delete_outline,
+        ),
+        onPressed: () => Navigator.pop(context),
+      ),
+    );
+    if (pickedImage != null) {
       setState(() {
-        _profileImage = File(pickedFile.path);
+        _profileImage = pickedImage;
       });
     }
   }
@@ -46,7 +53,7 @@ class EditProfileScreenState extends State<EditProfileScreen> {
         child: Column(
           children: [
             GestureDetector(
-              onTap: _pickImage,
+              onTap: _chooseImage,
               child: Stack(
                 alignment: Alignment.bottomRight,
                 children: [
@@ -129,7 +136,7 @@ class EditProfileScreenState extends State<EditProfileScreen> {
               ),
             ),
             ListTile(
-              leading: const Icon(Icons.phone),
+              leading: const Icon(Icons.phone_outlined),
               title: Text(
                 'Phone',
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
