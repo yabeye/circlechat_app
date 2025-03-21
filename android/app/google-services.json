@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "289043922212",
+    "project_id": "app-circlechat",
+    "storage_bucket": "app-circlechat.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:289043922212:android:2888bf8a407f835f3047b1",
+        "android_client_info": {
+          "package_name": "com.circlechat.app.circlechat_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEB2wOdnf4GA1VQO-EvbkSVkmSHqfuL5E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

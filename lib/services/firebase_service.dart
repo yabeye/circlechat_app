@@ -1,0 +1,106 @@
+import 'package:circlechat_app/core/errors.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:io';
+
+class FirebaseService {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseStorage _storage = FirebaseStorage.instance;
+
+  // Authentication
+  Future<UserCredential> signInWithPhoneNumber(
+      String smsCode, String verificationId) async {
+    try {
+      PhoneAuthCredential credential = PhoneAuthProvider.credential(
+        verificationId: verificationId,
+        smsCode: smsCode,
+      );
+      return await _auth.signInWithCredential(credential);
+    } on FirebaseAuthException catch (e) {
+      throw AppException(e.message ?? 'Sign-in failed.');
+    } catch (e) {
+      throw AppException('An unexpected error occurred during sign-in.');
+    }
+  }
+
+  Future<void> signOut() async {
+    try {
+      await _auth.signOut();
+    } on FirebaseAuthException catch (e) {
+      throw AppException(e.message ?? 'Sign-out failed.');
+    } catch (e) {
+      throw AppException('An unexpected error occurred during sign-out.');
+    }
+  }
+
+  User? getCurrentUser() {
+    return _auth.currentUser;
+  }
+
+  Future<void> sendVerificationCode(
+    String phoneNumber,
+    Function(UserCredential) verificationCompleted,
+    Function(AppException) verificationFailed,
+    Function(String, int?) codeSent,
+    Function(String) codeAutoRetrievalTimeout,
+  ) async {
+    try {
+      await _auth.verifyPhoneNumber(
+        phoneNumber: phoneNumber,
+        verificationCompleted: (PhoneAuthCredential credential) async {
+          UserCredential userCredential =
+              await _auth.signInWithCredential(credential);
+          verificationCompleted(userCredential);
+        },
+        verificationFailed: (FirebaseAuthException e) {
+          verificationFailed(AppException(e.message ?? 'Verification failed.'));
+        },
+        codeSent: codeSent,
+        codeAutoRetrievalTimeout: codeAutoRetrievalTimeout,
+      );
+    } on FirebaseAuthException catch (e) {
+      verificationFailed(AppException(e.message ?? 'Verification failed.'));
+    } catch (e) {
+      verificationFailed(
+          AppException('An unexpected error occurred during verification.'));
+    }
+  }
+
+  // Firestore
+  Future<void> createUserDocument(
+      String uid, Map<String, dynamic> userData) async {
+    await _firestore.collection('users').doc(uid).set(userData);
+  }
+
+  Future<DocumentSnapshot> getUserDocument(String uid) async {
+    return await _firestore.collection('users').doc(uid).get();
+  }
+
+  Future<void> updateDocument(
+      String collection, String docId, Map<String, dynamic> data) async {
+    await _firestore.collection(collection).doc(docId).update(data);
+  }
+
+  Stream<QuerySnapshot> getCollectionStream(String collection) {
+    return _firestore.collection(collection).snapshots();
+  }
+
+  Future<void> addDocument(String collection, Map<String, dynamic> data) async {
+    await _firestore.collection(collection).add(data);
+  }
+
+  Stream<DocumentSnapshot> getDocumentStream(
+      String collection, String documentId) {
+    return _firestore.collection(collection).doc(documentId).snapshots();
+  }
+
+  // Storage
+  Future<String> uploadFile(File file, String path) async {
+    UploadTask uploadTask = _storage.ref(path).putFile(file);
+    TaskSnapshot snapshot = await uploadTask;
+    String downloadURL = await snapshot.ref.getDownloadURL();
+    return downloadURL;
+  }
+}
