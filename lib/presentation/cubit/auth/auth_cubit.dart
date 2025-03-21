@@ -12,7 +12,7 @@ class AuthCubit extends Cubit<AuthState> {
   AuthCubit(FirebaseService firebaseService)
       : _firebaseService = firebaseService,
         _logger = getIt<LoggingService>(),
-        super(AuthInitial());
+        super(AuthInitial(null));
 
   PhoneNumber? selectedPhoneNumber;
 
@@ -21,7 +21,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   void setPhoneNumber(PhoneNumber phoneNumber) {
     selectedPhoneNumber = phoneNumber;
-    emit(PhoneNumberChanged(phoneNumber));
+    emit(AuthPhoneNumberChanged(phoneNumber));
   }
 
   bool get isValidPhoneNumber =>
@@ -30,35 +30,40 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> sendVerificationCode() async {
     final String phoneNumber = selectedPhoneNumber?.phoneNumber ?? '';
     if (phoneNumber.isEmpty) {
-      emit(AuthError('Please enter a valid phone number.'));
+      emit(
+        AuthError(
+          selectedPhoneNumber,
+          'Please enter a valid phone number.',
+        ),
+      );
       return;
     }
 
     emit(AuthLoading(selectedPhoneNumber));
     await Future.delayed(const Duration(seconds: 5));
-    emit(PhoneNumberChanged(selectedPhoneNumber!));
+    emit(VerificationCodeSent(selectedPhoneNumber, 'selectedPhoneNumber'));
 
     return;
     try {
       await _firebaseService.sendVerificationCode(
         phoneNumber,
         (UserCredential userCredential) async {
-          emit(AuthSuccess(userCredential.user!));
+          emit(AuthSuccess(selectedPhoneNumber, userCredential.user!));
         },
         (AppException e) {
-          emit(AuthError(e.message));
+          emit(AuthError(selectedPhoneNumber, e.message));
           _logger.error('Verification failed: ${e.message}', error: e);
         },
         (String verificationId, int? resendToken) {
-          emit(VerificationCodeSent(verificationId));
+          emit(VerificationCodeSent(selectedPhoneNumber, verificationId));
         },
         (String verificationId) {
-          emit(AuthError('Verification timeout.'));
+          emit(AuthError(selectedPhoneNumber, 'Verification timeout.'));
           _logger.warning('Verification timeout: $verificationId');
         },
       );
     } catch (e, stackTrace) {
-      emit(AuthError('An unexpected error occurred.'));
+      emit(AuthError(selectedPhoneNumber, 'An unexpected error occurred.'));
       _logger.error('Unexpected error sending verification code',
           error: e, stackTrace: stackTrace);
     }
@@ -66,20 +71,30 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> signInWithPhoneNumber(
     String smsCode,
-    String verificationId,
   ) async {
+    String verificationId = '';
+    if (state is VerificationCodeSent) {
+      verificationId = (state as VerificationCodeSent).verificationId;
+    }
+
     emit(AuthLoading(selectedPhoneNumber));
+
+    await Future.delayed(const Duration(seconds: 3));
+
+    emit(AuthSuccess(selectedPhoneNumber, null));
+
+    return;
     try {
       final userCredential = await _firebaseService.signInWithPhoneNumber(
         smsCode,
         verificationId,
       );
-      emit(AuthSuccess(userCredential.user!));
+      emit(AuthSuccess(selectedPhoneNumber, userCredential.user!));
     } on AppException catch (e) {
-      emit(AuthError(e.message));
+      emit(AuthError(selectedPhoneNumber, e.message));
       _logger.error('Sign-in failed: ${e.message}', error: e);
     } catch (e, stackTrace) {
-      emit(AuthError('An unexpected error occurred.'));
+      emit(AuthError(selectedPhoneNumber, 'An unexpected error occurred.'));
       _logger.error(
         'Unexpected error signing in with phone number',
         error: e,
@@ -92,12 +107,12 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthLoading(selectedPhoneNumber));
     try {
       await _firebaseService.signOut();
-      emit(AuthInitial());
+      emit(AuthInitial(selectedPhoneNumber));
     } on AppException catch (e) {
-      emit(AuthError(e.message));
+      emit(AuthError(selectedPhoneNumber, e.message));
       _logger.error('Sign-out failed: ${e.message}', error: e);
     } catch (e, stackTrace) {
-      emit(AuthError('Sign-out failed.'));
+      emit(AuthError(selectedPhoneNumber, 'Sign-out failed.'));
       _logger.error('Sign-out failed', error: e, stackTrace: stackTrace);
     }
   }

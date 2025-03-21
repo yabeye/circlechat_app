@@ -1,3 +1,5 @@
+import 'package:circlechat_app/core/navigation/app_router.dart';
+import 'package:circlechat_app/core/navigation/navigation_helper.dart';
 import 'package:circlechat_app/core/utils/internalization_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -56,14 +58,7 @@ class PhoneAuthScreenState extends State<PhoneAuthScreen> {
                 const SizedBox(height: 32),
                 BlocBuilder<AuthCubit, AuthState>(
                   builder: (context, state) {
-                    String? countryCode;
-                    if (state is PhoneNumberChanged) {
-                      countryCode = state.phoneNumber.isoCode ?? 'US';
-                    }
-
-                    if (state is AuthLoading) {
-                      countryCode = state.phoneNumber?.isoCode ?? 'US';
-                    }
+                    String? countryCode = state.phoneNumber?.isoCode ?? 'US';
 
                     return Stack(
                       clipBehavior: Clip.none,
@@ -125,10 +120,7 @@ class PhoneAuthScreenState extends State<PhoneAuthScreen> {
                 const SizedBox(height: 16),
                 BlocBuilder<AuthCubit, AuthState>(
                   builder: (context, state) {
-                    String? countryCode;
-                    if (state is PhoneNumberChanged) {
-                      countryCode = state.phoneNumber.isoCode ?? 'US';
-                    }
+                    String countryCode = state.phoneNumber?.isoCode ?? 'US';
 
                     // if (countryCode == null) return const SizedBox.shrink();
 
@@ -211,6 +203,13 @@ class PhoneAuthScreenState extends State<PhoneAuthScreen> {
                 : () async {
                     try {
                       await context.read<AuthCubit>().sendVerificationCode();
+
+                      if (!mounted) return;
+
+                      if (state is AuthError) {
+                        throw Exception(state.message);
+                      }
+                      NavigationHelper.navigateTo(context, AppRouter.otpAuth);
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(

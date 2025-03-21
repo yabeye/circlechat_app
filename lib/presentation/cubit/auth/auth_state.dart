@@ -1,33 +1,35 @@
 part of 'auth_cubit.dart';
 
-abstract class AuthState {}
-
-class AuthInitial extends AuthState {}
-
-class AuthLoading extends AuthState {
-  AuthLoading(this.phoneNumber);
+abstract class AuthState {
+  AuthState(this.phoneNumber);
   final PhoneNumber? phoneNumber;
 }
 
-class AuthSuccess extends AuthState {
-  AuthSuccess(this.user);
+class AuthInitial extends AuthState {
+  AuthInitial(super.phoneNumber);
+}
 
-  final User user;
+class AuthLoading extends AuthState {
+  AuthLoading(super.phoneNumber);
+}
+
+class AuthSuccess extends AuthState {
+  AuthSuccess(super.phoneNumber, this.user);
+
+  final User? user;
 }
 
 class AuthError extends AuthState {
-  AuthError(this.message);
+  AuthError(super.phoneNumber, this.message);
 
   final String message;
 }
 
 class VerificationCodeSent extends AuthState {
+  VerificationCodeSent(super.phoneNumber, this.verificationId);
   final String verificationId;
-
-  VerificationCodeSent(this.verificationId);
 }
 
-class PhoneNumberChanged extends AuthState {
-  PhoneNumberChanged(this.phoneNumber);
-  final PhoneNumber phoneNumber;
+class AuthPhoneNumberChanged extends AuthState {
+  AuthPhoneNumberChanged(super.phoneNumber);
 }

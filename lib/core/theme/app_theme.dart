@@ -51,6 +51,24 @@ ThemeData lightTheme = ThemeData(
       color: AppColors.textLight.withValues(alpha: 0.7),
     ),
   ),
+  navigationBarTheme: NavigationBarThemeData(
+    // backgroundColor: AppColors.primary,
+    // indicatorColor: Colors.white,
+    // iconTheme: MaterialStateProperty.all(
+    //   IconThemeData(
+    //     size: 32,
+    //     color: AppColors.textLight,
+    //   ),
+    // ),
+
+    labelTextStyle: WidgetStateProperty.all(
+      GoogleFonts.roboto(
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+        color: AppColors.textLight,
+      ),
+    ),
+  ),
 );
 
 ThemeData darkTheme = ThemeData(
