@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:circlechat_app/core/theme/app_colors.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,8 +12,9 @@ class UIHelpers {
     String title,
     String initialValue,
     String placeholder,
-    Function(String) onSave,
-  ) {
+    Function(String) onSave, {
+    bool allowEmpty = true,
+  }) {
     String newValue = initialValue;
     showModalBottomSheet(
       context: context,
@@ -83,6 +85,11 @@ class UIHelpers {
                       width: 100,
                       child: TextButton(
                         onPressed: () {
+                          if (allowEmpty && newValue.isEmpty) {
+                            UIHelpers.showToast('$title can\'t be empty');
+                            return;
+                          }
+
                           onSave(newValue);
                           Navigator.pop(context);
                         },
@@ -105,9 +112,10 @@ class UIHelpers {
     );
   }
 
-  static Future<File?> pickImage(
+  // TODO: Add an edit profile photo before upload option
+  static Future<File?> choosePhoto(
     BuildContext context, {
-    String title = 'Choose Image',
+    String title = 'Choose Photo',
     Widget? actionIcon,
   }) async {
     final picker = ImagePicker();
@@ -204,27 +212,43 @@ class UIHelpers {
       margin: const EdgeInsets.only(right: 32),
       child: InkWell(
         onTap: onTap,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: AppColors.primary.withValues(alpha: .3),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: AppColors.primary.withValues(alpha: .3),
+                  ),
                 ),
+                child: Icon(icon, size: 30, color: AppColors.primary),
               ),
-              child: Icon(icon, size: 30, color: AppColors.primary),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              label,
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-          ],
+              const SizedBox(height: 8),
+              Text(
+                label,
+                style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+              ),
+            ],
+          ),
         ),
       ),
+    );
+  }
+
+  static void showToast(String message) {
+    Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.grey[300],
+      textColor: Colors.black,
+      fontSize: 16.0,
     );
   }
 }

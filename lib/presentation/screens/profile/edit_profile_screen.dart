@@ -4,6 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:circlechat_app/core/theme/app_colors.dart';
 import 'dart:io';
 
+import 'about_edit_screen.dart';
+
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
 
@@ -14,12 +16,12 @@ class EditProfileScreen extends StatefulWidget {
 class EditProfileScreenState extends State<EditProfileScreen> {
   String _name = '';
   final _namePlaceholder = 'Enter your name';
-  String _bio = '';
-  final _bioPlaceholder = 'Enter your bio';
+  String _about = 'I\'m using CirlceChat';
+  final _aboutPlaceholder = 'Enter your About';
   File? _profileImage;
 
   Future<void> _chooseImage() async {
-    final pickedImage = await UIHelpers.pickImage(
+    final pickedImage = await UIHelpers.choosePhoto(
       context,
       title: 'Profile Photo',
       actionIcon: IconButton(
@@ -114,25 +116,28 @@ class EditProfileScreenState extends State<EditProfileScreen> {
             ListTile(
               leading: const Icon(Icons.info_outline),
               title: Text(
-                'Bio',
+                'About',
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
               ),
               subtitle: Text(
-                _bio.isEmpty ? _bioPlaceholder : _bio,
+                _about.isEmpty ? _aboutPlaceholder : _about,
                 style: Theme.of(context).textTheme.bodySmall,
               ),
-              onTap: () => UIHelpers.showEditBottomSheet(
+              onTap: () => Navigator.push(
                 context,
-                'Bio',
-                _bio,
-                _bioPlaceholder,
-                (value) {
-                  setState(() {
-                    _bio = value;
-                  });
-                },
+                MaterialPageRoute(
+                  builder: (context) => AboutEditScreen(
+                    initialAbout: _about,
+                    onAboutChanged: (newAbout) {
+                      setState(() {
+                        _about = newAbout;
+                      });
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
               ),
             ),
             ListTile(
@@ -154,7 +159,7 @@ class EditProfileScreenState extends State<EditProfileScreen> {
                 'Enter your phone number',
                 (value) {
                   setState(() {
-                    _bio = value;
+                    _about = value;
                   });
                 },
               ),
