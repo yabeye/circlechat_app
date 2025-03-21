@@ -19,6 +19,9 @@ class AuthCubit extends Cubit<AuthState> {
   final FirebaseService _firebaseService;
   final LoggingService _logger;
 
+  String? get userId => 'my-dummy-uid';
+  // String? get userId => _firebaseService.getCurrentUser()?.uid;
+
   void setPhoneNumber(PhoneNumber phoneNumber) {
     selectedPhoneNumber = phoneNumber;
     emit(AuthPhoneNumberChanged(phoneNumber));

@@ -1,7 +1,7 @@
+import 'package:circlechat_app/presentation/screens/chat/chat_list_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'app_bottom_navigation_bar.dart';
-import 'home_app_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,7 +15,7 @@ class HomeScreenState extends State<HomeScreen> {
   final PageController _pageController = PageController();
 
   static const List<Widget> _homePages = <Widget>[
-    Center(child: Text('Chats')),
+    ChatListScreen(),
     Center(child: Text('Status')),
     Center(child: Text('Communities')),
     Center(child: Text('Calls')),
@@ -47,7 +47,6 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const HomeAppBar(),
       body: PageView(
         controller: _pageController,
         onPageChanged: _onPageChanged,

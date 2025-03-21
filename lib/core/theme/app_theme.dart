@@ -8,10 +8,16 @@ ThemeData lightTheme = ThemeData(
   colorScheme: const ColorScheme.light(secondary: AppColors.secondary),
   scaffoldBackgroundColor: AppColors.backgroundLight,
   cardColor: AppColors.cardLight,
-  appBarTheme: const AppBarTheme(
+  appBarTheme: AppBarTheme(
     backgroundColor: AppColors.textDark,
     foregroundColor: Colors.white,
-    iconTheme: IconThemeData(color: AppColors.textLight),
+    iconTheme: const IconThemeData(color: AppColors.textLight),
+    titleTextStyle: GoogleFonts.roboto(
+      fontWeight: FontWeight.w600,
+      color: AppColors.textLight,
+      fontSize: 22,
+    ),
+    surfaceTintColor: AppColors.textDark,
   ),
   textTheme: GoogleFonts.robotoTextTheme(
     TextTheme(
@@ -85,6 +91,7 @@ ThemeData darkTheme = ThemeData(
     backgroundColor: Colors.grey[850],
     foregroundColor: Colors.white,
     iconTheme: const IconThemeData(color: AppColors.textDark),
+    surfaceTintColor: Colors.grey[850],
   ),
   textTheme: GoogleFonts.robotoTextTheme(
     TextTheme(
@@ -116,7 +123,6 @@ ThemeData darkTheme = ThemeData(
     elevation: 2,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
   ),
-  // FloatingActionButtonTheme
   floatingActionButtonTheme: FloatingActionButtonThemeData(
     backgroundColor: AppColors.primary,
     foregroundColor: Colors.white,

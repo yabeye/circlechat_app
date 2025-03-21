@@ -16,7 +16,7 @@ class AppRouter {
   static const String chat = '/chat/:chatId';
 
   static GoRouter router = GoRouter(
-    initialLocation: editProfile,
+    initialLocation: home,
     routes: [
       GoRoute(
         path: splash,

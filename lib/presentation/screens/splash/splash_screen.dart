@@ -43,7 +43,7 @@ class SplashScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 AppSvg(
-                  path: IconFiles.logo,
+                  path: KIcons.logo,
                   height: 100,
                   width: 100,
                   color: localTextColor,

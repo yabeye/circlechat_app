@@ -42,7 +42,7 @@ class WalkthroughScreen extends StatelessWidget {
       centerBackground: true,
       background: [
         const AppSvg(
-          path: IconFiles.logo,
+          path: KIcons.logo,
           width: 400,
           height: 400,
           color: AppColors.primary,
