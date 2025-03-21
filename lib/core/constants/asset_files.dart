@@ -1,7 +1,7 @@
 // Icon files
 
 abstract class IconFiles {
-  static const String logo = 'assets/icons/logo.png';
+  static const String logo = 'assets/icons/logo.svg';
 }
 
 

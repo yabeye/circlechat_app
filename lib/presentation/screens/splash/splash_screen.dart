@@ -1,3 +1,7 @@
+import 'package:circlechat_app/core/constants/app_constants.dart';
+import 'package:circlechat_app/core/constants/asset_files.dart';
+import 'package:circlechat_app/core/navigation/app_router.dart';
+import 'package:circlechat_app/core/navigation/navigation_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:circlechat_app/presentation/widgets/app_widgets/app_image.dart';
@@ -15,6 +19,17 @@ class SplashScreen extends StatelessWidget {
       ),
     );
 
+    // TODO: Move this logic to a cubit latter
+    // Temporary Fix
+    Future.delayed(const Duration(seconds: 2), () {
+      // ignore: use_build_context_synchronously
+      NavigationHelper.navigateTo(
+        context,
+        AppRouter.walkthrough,
+        replace: true,
+      );
+    });
+
     Color localTextColor = Colors.black;
 
     return Scaffold(
@@ -28,14 +43,14 @@ class SplashScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 AppSvg(
-                  path: 'assets/icons/logo.svg',
+                  path: IconFiles.logo,
                   height: 100,
                   width: 100,
                   color: localTextColor,
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  'CircleChat',
+                  AppConstants.appName,
                   style: Theme.of(context)
                       .textTheme
                       .headlineLarge!
@@ -43,7 +58,7 @@ class SplashScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  'Connecting you with your circle.',
+                  AppConstants.appDescription,
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                         color: localTextColor.withValues(alpha: 0.7),
                       ),
