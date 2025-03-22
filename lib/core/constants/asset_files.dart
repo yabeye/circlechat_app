@@ -20,6 +20,7 @@ abstract class KIcons {
           child: Icon(
             Icons.person,
             size: size * .9,
+            color: AppColors.textDark,
           ),
         ),
       );
@@ -33,6 +34,7 @@ abstract class KIcons {
         child: Icon(
           Icons.group,
           size: size * .6,
+          color: AppColors.textDark,
         ),
       );
 }

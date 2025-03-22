@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'app_colors.dart';
 
 ThemeData lightTheme = ThemeData(
+  useMaterial3: true,
   brightness: Brightness.light,
   primaryColor: AppColors.primary,
   colorScheme: const ColorScheme.light(secondary: AppColors.secondary),
@@ -12,14 +13,15 @@ ThemeData lightTheme = ThemeData(
     backgroundColor: AppColors.textDark,
     foregroundColor: Colors.white,
     iconTheme: const IconThemeData(color: AppColors.textLight),
-    titleTextStyle: GoogleFonts.roboto(
-      fontWeight: FontWeight.w600,
+    titleTextStyle: GoogleFonts.poppins(
+      fontWeight: FontWeight.w500,
       color: AppColors.textLight,
-      fontSize: 22,
+      fontSize: 20,
     ),
+    titleSpacing: 0,
     surfaceTintColor: AppColors.textDark,
   ),
-  textTheme: GoogleFonts.robotoTextTheme(
+  textTheme: GoogleFonts.poppinsTextTheme(
     TextTheme(
       bodyLarge: const TextStyle(color: AppColors.textLight),
       titleLarge: const TextStyle(color: AppColors.textLight),
@@ -65,18 +67,43 @@ ThemeData lightTheme = ThemeData(
     ),
   ),
   inputDecorationTheme: InputDecorationTheme(
-    labelStyle: GoogleFonts.roboto(
+    labelStyle: GoogleFonts.poppins(
       fontSize: 12,
       color: AppColors.textLight.withValues(alpha: 0.7),
     ),
   ),
   navigationBarTheme: NavigationBarThemeData(
     labelTextStyle: WidgetStateProperty.all(
-      GoogleFonts.roboto(
-        fontSize: 16,
+      GoogleFonts.poppins(
+        fontSize: 14,
         fontWeight: FontWeight.bold,
         color: AppColors.textLight,
       ),
+    ),
+  ),
+  dividerTheme: DividerThemeData(
+    color: AppColors.textLight.withOpacity(0.2),
+    thickness: 1,
+    space: 8,
+  ),
+  listTileTheme: ListTileThemeData(
+    textColor: AppColors.textLight,
+    iconColor: AppColors.textLight,
+    selectedColor: AppColors.primary,
+    selectedTileColor: AppColors.selectedColor,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(8),
+    ),
+    titleTextStyle: GoogleFonts.poppins(
+      fontSize: 15,
+      fontWeight: FontWeight.normal,
+      color: AppColors.textLight,
+    ),
+    subtitleTextStyle: GoogleFonts.poppins(
+      fontSize: 14,
+      fontWeight: FontWeight.w400,
+      // color: AppColors.textLight.withOpacity(0.6),
+      color: AppColors.greyDark,
     ),
   ),
 );
@@ -92,8 +119,13 @@ ThemeData darkTheme = ThemeData(
     foregroundColor: Colors.white,
     iconTheme: const IconThemeData(color: AppColors.textDark),
     surfaceTintColor: Colors.grey[850],
+    titleTextStyle: GoogleFonts.poppins(
+      fontWeight: FontWeight.w800,
+      color: AppColors.textDark,
+      fontSize: 18,
+    ),
   ),
-  textTheme: GoogleFonts.robotoTextTheme(
+  textTheme: GoogleFonts.poppinsTextTheme(
     TextTheme(
       bodyLarge: const TextStyle(color: AppColors.textDark),
       titleLarge: const TextStyle(color: AppColors.textDark),
@@ -132,8 +164,8 @@ ThemeData darkTheme = ThemeData(
   ),
   navigationBarTheme: NavigationBarThemeData(
     labelTextStyle: WidgetStateProperty.all(
-      GoogleFonts.roboto(
-        fontSize: 16,
+      GoogleFonts.poppins(
+        fontSize: 12,
         fontWeight: FontWeight.bold,
         color: AppColors.textDark,
       ),

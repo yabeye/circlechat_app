@@ -16,10 +16,11 @@ class NavigationHelper {
         path = path.replaceAll(':$key', value);
       });
     }
+
     if (replace) {
       context.go(path);
     } else {
-      context.go(path);
+      context.push(path);
     }
   }
 }

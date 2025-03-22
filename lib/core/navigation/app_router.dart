@@ -2,6 +2,7 @@ import 'package:circlechat_app/presentation/screens/auth/otp_screen.dart';
 import 'package:circlechat_app/presentation/screens/auth/phone_auth_screen.dart';
 import 'package:circlechat_app/presentation/screens/home/home_screen.dart';
 import 'package:circlechat_app/presentation/screens/profile/edit_profile_screen.dart';
+import 'package:circlechat_app/presentation/screens/settings/settings_screen.dart';
 import 'package:circlechat_app/presentation/screens/walkthrough/walkthrough_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:circlechat_app/presentation/screens/splash/splash_screen.dart';
@@ -14,6 +15,7 @@ class AppRouter {
   static const String editProfile = '/edit-profile';
   static const String home = '/';
   static const String chat = '/chat/:chatId';
+  static const String settings = '/settings';
 
   static GoRouter router = GoRouter(
     initialLocation: home,
@@ -41,6 +43,10 @@ class AppRouter {
       GoRoute(
         path: home,
         builder: (context, state) => const HomeScreen(),
+      ),
+      GoRoute(
+        path: settings,
+        builder: (context, state) => const SettingsScreen(),
       ),
       // GoRoute(
       //   path: chatList,

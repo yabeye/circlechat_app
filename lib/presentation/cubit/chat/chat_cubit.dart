@@ -1,6 +1,5 @@
-// lib/presentation/cubits/chat_cubit.dart
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'chat_state.dart';
 

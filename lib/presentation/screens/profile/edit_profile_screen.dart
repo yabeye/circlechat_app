@@ -42,13 +42,7 @@ class EditProfileScreenState extends State<EditProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Profile',
-          style: GoogleFonts.poppins(
-            fontWeight: FontWeight.w600,
-            color: Theme.of(context).textTheme.bodyLarge?.color,
-          ),
-        ),
+        title: const Text('Profile'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(vertical: 24.0),

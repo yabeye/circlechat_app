@@ -1,3 +1,6 @@
+import 'package:circlechat_app/core/constants/app_sizes.dart';
+import 'package:circlechat_app/core/navigation/app_router.dart';
+import 'package:circlechat_app/core/navigation/navigation_helper.dart';
 import 'package:circlechat_app/presentation/cubit/chat/chat_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,12 +12,14 @@ class ChatMainAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(
+      titleSpacing: AppSizes.globalPadding,
+      titleTextStyle: GoogleFonts.poppins(
+        fontWeight: FontWeight.bold,
+        color: Theme.of(context).textTheme.bodyLarge?.color,
+        fontSize: 24,
+      ),
+      title: const Text(
         'CircleChat',
-        style: GoogleFonts.poppins(
-          fontWeight: FontWeight.w600,
-          color: Theme.of(context).textTheme.bodyLarge?.color,
-        ),
       ),
       actions: <Widget>[
         IconButton(
@@ -37,6 +42,7 @@ class ChatMainAppBar extends StatelessWidget implements PreferredSizeWidget {
               case 'Starred Messages':
                 break;
               case 'Settings':
+                NavigationHelper.navigateTo(context, AppRouter.settings);
                 break;
             }
           },

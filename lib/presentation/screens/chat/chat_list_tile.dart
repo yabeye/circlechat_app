@@ -38,8 +38,9 @@ class ChatListTileState extends State<ChatListTile> {
         }
       },
       child: Container(
-        color: isSelected ? AppColors.selectIndicator : Colors.transparent,
+        // color: isSelected ? AppColors.selectIndicator : Colors.transparent,
         child: ListTile(
+          selected: isSelected,
           contentPadding: const EdgeInsets.symmetric(
             horizontal: AppSizes.globalPadding,
           ),
@@ -51,22 +52,22 @@ class ChatListTileState extends State<ChatListTile> {
                   ? KIcons.defaultGroupProfilePic()
                   : KIcons.defaultProfilePic(),
               Positioned(
-                bottom: 0,
-                right: 0,
+                bottom: -2,
+                right: -2,
                 child: isSelected
                     ? Container(
                         decoration: BoxDecoration(
                           color: AppColors.primary,
                           borderRadius: BorderRadius.circular(100),
                           border: Border.all(
-                              color: AppColors.selectIndicator, width: 2),
-                        ),
-                        child: const Padding(
-                          padding: EdgeInsets.all(2.0),
-                          child: Icon(
-                            Icons.check_outlined,
-                            size: 18,
+                            color: AppColors.selectedColor,
+                            width: 3,
                           ),
+                        ),
+                        child: const Icon(
+                          Icons.check,
+                          size: 22,
+                          color: AppColors.black,
                         ),
                       )
                     : const SizedBox(),
@@ -75,10 +76,10 @@ class ChatListTileState extends State<ChatListTile> {
           ),
           title: Text(
             widget.chatModel.chatName ?? '',
-            style: GoogleFonts.poppins(
-              fontWeight: FontWeight.w500,
-              fontSize: 16,
-            ),
+            style: Theme.of(context).listTileTheme.titleTextStyle!.copyWith(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                ),
           ),
           horizontalTitleGap: 8,
           subtitle: Row(
@@ -110,11 +111,8 @@ class ChatListTileState extends State<ChatListTile> {
               Expanded(
                 child: Text(
                   widget.chatModel.lastMessage ?? '',
-                  style: GoogleFonts.poppins(
-                    color: Colors.grey,
-                    fontSize: 14,
-                  ),
-                  overflow: TextOverflow.ellipsis, // Add overflow handling
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).listTileTheme.subtitleTextStyle,
                 ),
               ),
             ],
