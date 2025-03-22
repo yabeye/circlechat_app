@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -138,5 +139,39 @@ class AppSvg extends StatelessWidget {
               : null,
         );
     }
+  }
+}
+
+// CachedNetworkImage
+class AppCachedNetworkImage extends StatelessWidget {
+  const AppCachedNetworkImage({
+    super.key,
+    required this.imageUrl,
+    this.width,
+    this.height,
+    this.borderRadius,
+    this.fit = BoxFit.cover,
+  });
+
+  final String imageUrl;
+  final double? width;
+  final double? height;
+  final BorderRadius? borderRadius;
+  final BoxFit fit;
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: borderRadius ?? BorderRadius.circular(0),
+      child: CachedNetworkImage(
+        imageUrl: imageUrl,
+        width: width,
+        height: height,
+        fit: fit,
+        errorWidget: (context, url, error) {
+          return const Icon(Icons.error);
+        },
+      ),
+    );
   }
 }

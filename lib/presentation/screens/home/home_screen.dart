@@ -1,5 +1,6 @@
 import 'package:circlechat_app/presentation/screens/chat/chat_list_screen.dart';
 import 'package:circlechat_app/presentation/screens/communities/communities_list_screen.dart';
+import 'package:circlechat_app/presentation/screens/updates/updates_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'app_bottom_navigation_bar.dart';
@@ -17,7 +18,7 @@ class HomeScreenState extends State<HomeScreen> {
 
   static const List<Widget> _homePages = <Widget>[
     ChatListScreen(),
-    Center(child: Text('Status')),
+    UpdatesScreen(),
     CommunitiesScreen(),
     Center(child: Text('Calls')),
   ];

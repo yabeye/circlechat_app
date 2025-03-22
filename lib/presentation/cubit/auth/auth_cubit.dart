@@ -20,6 +20,7 @@ class AuthCubit extends Cubit<AuthState> {
   final LoggingService _logger;
 
   String? get userId => 'my-dummy-uid';
+  bool isMyId(String? userId) => userId == this.userId;
   // String? get userId => _firebaseService.getCurrentUser()?.uid;
 
   void setPhoneNumber(PhoneNumber phoneNumber) {

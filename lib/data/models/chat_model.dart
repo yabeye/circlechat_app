@@ -8,6 +8,7 @@ class ChatModel {
     this.isSeen,
     this.isGroup,
     this.lastMessageUserId,
+    this.isVerified,
   });
 
   final String id;
@@ -18,6 +19,8 @@ class ChatModel {
   final bool? isSeen;
   final bool? isGroup;
   final String? lastMessageUserId;
+  // Temporary field to indicate account verification status
+  final bool? isVerified;
 
   ChatModel copyWith({
     String? id,
@@ -29,6 +32,7 @@ class ChatModel {
     bool? isSeen,
     bool? isGroup,
     String? lastMessageUserId,
+    bool? isVerified,
   }) {
     return ChatModel(
       id: id ?? this.id,
@@ -39,6 +43,7 @@ class ChatModel {
       isSeen: isSeen ?? this.isSeen,
       isGroup: isGroup ?? this.isGroup,
       lastMessageUserId: lastMessageUserId ?? this.lastMessageUserId,
+      isVerified: isVerified ?? this.isVerified,
     );
   }
 }

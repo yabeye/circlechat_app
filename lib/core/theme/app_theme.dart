@@ -14,7 +14,7 @@ ThemeData lightTheme = ThemeData(
     foregroundColor: Colors.white,
     iconTheme: const IconThemeData(color: AppColors.textLight),
     titleTextStyle: GoogleFonts.poppins(
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.normal,
       color: AppColors.textLight,
       fontSize: 20,
     ),
@@ -28,10 +28,15 @@ ThemeData lightTheme = ThemeData(
         color: AppColors.textLight,
         fontSize: 21,
       ),
-      titleSmall: const TextStyle(
-        fontWeight: FontWeight.w600,
+      titleMedium: const TextStyle(
+        fontWeight: FontWeight.w500,
         color: AppColors.textLight,
         fontSize: 18,
+      ),
+      titleSmall: const TextStyle(
+        fontWeight: FontWeight.w500,
+        color: AppColors.textLight,
+        fontSize: 16,
       ),
       headlineLarge: const TextStyle(
         fontSize: 32,
@@ -57,6 +62,14 @@ ThemeData lightTheme = ThemeData(
         fontSize: 11,
         color: AppColors.textLight.withOpacity(0.7),
       ),
+      labelLarge: const TextStyle(
+        fontSize: 14,
+        color: AppColors.greyDark,
+      ),
+      labelMedium: const TextStyle(
+        fontSize: 12,
+        color: AppColors.greyDark,
+      ),
     ),
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
@@ -67,6 +80,11 @@ ThemeData lightTheme = ThemeData(
         fontSize: 13,
         fontWeight: FontWeight.w600,
       ),
+    ),
+  ),
+  textButtonTheme: TextButtonThemeData(
+    style: TextButton.styleFrom(
+      foregroundColor: AppColors.primary,
     ),
   ),
   cardTheme: CardTheme(
@@ -127,7 +145,7 @@ ThemeData lightTheme = ThemeData(
 
 ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
-  primaryColor: AppColors.primary,
+  primaryColor: AppColors.primaryDark,
   colorScheme: const ColorScheme.dark(secondary: AppColors.secondary),
   scaffoldBackgroundColor: AppColors.backgroundDark,
   cardColor: AppColors.cardDark,

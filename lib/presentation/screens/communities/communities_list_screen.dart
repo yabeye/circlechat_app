@@ -37,8 +37,9 @@ class CommunitiesScreen extends StatelessWidget {
               ),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: AppImage(
-                  assetPath: KImages.communitiesIllustration,
+                child: AppCachedNetworkImage(
+                  imageUrl:
+                      'https://img.freepik.com/free-vector/people-holding-their-creativity-vector-cute-doodle-icons-set_53876-111621.jpg?t=st=1742647533~exp=1742651133~hmac=6415db664449bc01eaf27e7efdddccfb235515019494c80569f7d83c4fae4da9&w=996',
                   width: AppSizes.emptyPageImageSize,
                   height: AppSizes.emptyPageImageSize,
                 ),
@@ -47,10 +48,10 @@ class CommunitiesScreen extends StatelessWidget {
             const SizedBox(height: 24),
             Text(
               'Stay connected with a community',
-              style: Theme.of(context).textTheme.titleSmall,
+              style: Theme.of(context).textTheme.titleMedium,
               textAlign: TextAlign.center,
             ),
-            AppSizes.verticalPadding,
+            AppSizes.verticalPaddingMin,
             Text(
               'Communities bring members together in topic-based groups, and make it easy to get admin announcements. Any community you\'re added to will appear here.',
               style: Theme.of(context).textTheme.bodyMedium,

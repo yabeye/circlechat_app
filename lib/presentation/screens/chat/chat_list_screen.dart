@@ -23,7 +23,7 @@ class ChatListScreenState extends State<ChatListScreen> {
   void initState() {
     super.initState();
     chatData = List.generate(20, (index) {
-      final id = const Uuid().v4();
+      final id = index.toString();
       return ChatModel(
         id: id,
         chatName: index % 2 == 0 ? 'Group Chat $index' : 'Contact $index',
@@ -35,6 +35,7 @@ class ChatListScreenState extends State<ChatListScreen> {
         lastMessageUserId: index % 3 == 0
             ? context.read<AuthCubit>().userId
             : const Uuid().v4(),
+        isVerified: index == 0 || index == 4,
       );
     });
   }
