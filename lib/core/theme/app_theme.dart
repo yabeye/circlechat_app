@@ -7,7 +7,7 @@ ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
   primaryColor: AppColors.primary,
   colorScheme: const ColorScheme.light(secondary: AppColors.secondary),
-  scaffoldBackgroundColor: AppColors.backgroundLight,
+  scaffoldBackgroundColor: AppColors.white,
   cardColor: AppColors.cardLight,
   appBarTheme: AppBarTheme(
     backgroundColor: AppColors.textDark,
@@ -23,8 +23,16 @@ ThemeData lightTheme = ThemeData(
   ),
   textTheme: GoogleFonts.poppinsTextTheme(
     TextTheme(
-      bodyLarge: const TextStyle(color: AppColors.textLight),
-      titleLarge: const TextStyle(color: AppColors.textLight),
+      titleLarge: const TextStyle(
+        fontWeight: FontWeight.w600,
+        color: AppColors.textLight,
+        fontSize: 21,
+      ),
+      titleSmall: const TextStyle(
+        fontWeight: FontWeight.w600,
+        color: AppColors.textLight,
+        fontSize: 18,
+      ),
       headlineLarge: const TextStyle(
         fontSize: 32,
         fontWeight: FontWeight.bold,
@@ -35,13 +43,18 @@ ThemeData lightTheme = ThemeData(
         fontWeight: FontWeight.bold,
         color: AppColors.textLight,
       ),
-      bodyMedium: TextStyle(
+      bodyLarge: const TextStyle(
         fontSize: 16,
-        color: AppColors.textLight.withOpacity(0.7),
+        fontWeight: FontWeight.w600,
+        color: AppColors.textLight,
+      ),
+      bodyMedium: const TextStyle(
+        fontSize: 12,
+        color: AppColors.textLight,
       ),
       bodySmall: TextStyle(
         fontWeight: FontWeight.w500,
-        fontSize: 14,
+        fontSize: 11,
         color: AppColors.textLight.withOpacity(0.7),
       ),
     ),
@@ -50,6 +63,10 @@ ThemeData lightTheme = ThemeData(
     style: ElevatedButton.styleFrom(
       backgroundColor: AppColors.primary,
       foregroundColor: Colors.white,
+      textStyle: GoogleFonts.poppins(
+        fontSize: 13,
+        fontWeight: FontWeight.w600,
+      ),
     ),
   ),
   cardTheme: CardTheme(
@@ -75,7 +92,7 @@ ThemeData lightTheme = ThemeData(
   navigationBarTheme: NavigationBarThemeData(
     labelTextStyle: WidgetStateProperty.all(
       GoogleFonts.poppins(
-        fontSize: 14,
+        fontSize: 12,
         fontWeight: FontWeight.bold,
         color: AppColors.textLight,
       ),

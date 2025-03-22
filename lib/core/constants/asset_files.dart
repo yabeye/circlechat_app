@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 
 abstract class KIcons {
   // Asset SVG files
-  static const String logo = 'assets/icons/logo.svg';
+  static const String _baseIcons = 'assets/icons/';
+  static const String logo = '${_baseIcons}logo.svg';
 
   // Material icons
   static Widget defaultProfilePic({double size = 48}) => Container(
@@ -39,5 +40,10 @@ abstract class KIcons {
       );
 }
 
+// Image files
 
-// Image files 
+abstract class KImages {
+  static const String _baseImages = 'assets/images/';
+  static const String communitiesIllustration =
+      '${_baseImages}communities_illustration.jpg';
+}

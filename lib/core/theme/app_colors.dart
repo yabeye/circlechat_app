@@ -12,6 +12,7 @@ class AppColors {
   static const Color textLight = Colors.black;
   static const Color textDark = Colors.white70;
   static const Color disabled = Color(0xFFBDBDBD);
+  static const Color externalLinkColor = Color.fromARGB(255, 13, 83, 214);
   static const Color seenIndicator = Color.fromARGB(255, 13, 83, 214);
 
   // BASIC

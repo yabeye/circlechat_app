@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:circlechat_app/core/locator.dart';
 import 'package:circlechat_app/core/navigation/app_router.dart';
 import 'package:circlechat_app/presentation/cubit/theme/theme_cubit.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'core/enums/theme_enum.dart';
 import 'core/theme/app_theme.dart';
@@ -41,12 +42,14 @@ class CirlceChatApp extends StatelessWidget {
                   brightness == Brightness.dark ? darkTheme : lightTheme;
           }
 
-          return MaterialApp.router(
-            title: 'CircleChat',
-            debugShowCheckedModeBanner: false,
-            theme: themeData,
-            routerConfig: AppRouter.router,
-          );
+          return ScreenUtilInit(builder: (context, _) {
+            return MaterialApp.router(
+              title: 'CircleChat',
+              debugShowCheckedModeBanner: false,
+              theme: themeData,
+              routerConfig: AppRouter.router,
+            );
+          });
         },
       ),
     );
