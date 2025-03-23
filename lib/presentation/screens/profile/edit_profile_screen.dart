@@ -7,6 +7,7 @@ import 'package:circlechat_app/core/utils/app_formatters.dart';
 import 'package:circlechat_app/core/utils/size_utils.dart';
 import 'package:circlechat_app/core/utils/ui_helpers.dart';
 import 'package:circlechat_app/presentation/cubit/auth/auth_cubit.dart';
+import 'package:circlechat_app/presentation/cubit/profile/profile_cubit.dart';
 import 'package:circlechat_app/presentation/widgets/app_widgets/app_buttons.dart';
 import 'package:circlechat_app/presentation/widgets/app_widgets/app_listtile.dart';
 import 'package:flutter/material.dart';
@@ -67,108 +68,142 @@ class EditProfileScreenState extends State<EditProfileScreen> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(
-          vertical: AppSizes.bodyVerticalPadding,
+      body: BlocProvider(
+        create: (context) => ProfileCubit(
+          getIt<AuthCubit>(),
         ),
-        child: Column(
-          children: [
-            GestureDetector(
-              onTap: _chooseImage,
-              child: Stack(
-                alignment: Alignment.bottomRight,
+        child: BlocConsumer<ProfileCubit, ProfileState>(
+          // Use BlocConsumer
+          listener: (context, state) {
+            if (state is ProfileSuccess && context.mounted) {
+              NavigationHelper.navigateTo(
+                context,
+                AppRouter.home,
+                replaceAll: true,
+              );
+            } else if (state is ProfileFailure) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Error: ${state.errorMessage}')),
+              );
+            }
+          },
+          builder: (context, state) {
+            return SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(
+                vertical: AppSizes.bodyVerticalPadding,
+              ),
+              child: Column(
                 children: [
-                  CircleAvatar(
-                    radius: 70,
-                    backgroundColor: AppColors.disabled.withAlpha(128),
-                    backgroundImage: _profileImage != null
-                        ? FileImage(_profileImage!)
-                        : null,
-                    child: _profileImage == null
-                        ? const Icon(
-                            Icons.person,
-                            size: 100,
-                            color: Colors.grey,
-                          )
-                        : null,
-                  ),
-                  Container(
-                    decoration: const BoxDecoration(
-                      color: AppColors.primary,
-                      shape: BoxShape.circle,
+                  GestureDetector(
+                    onTap: _chooseImage,
+                    child: Stack(
+                      alignment: Alignment.bottomRight,
+                      children: [
+                        CircleAvatar(
+                          radius: 70,
+                          backgroundColor: AppColors.disabled.withAlpha(128),
+                          backgroundImage: _profileImage != null
+                              ? FileImage(_profileImage!)
+                              : null,
+                          child: _profileImage == null
+                              ? const Icon(
+                                  Icons.person,
+                                  size: 100,
+                                  color: Colors.grey,
+                                )
+                              : null,
+                        ),
+                        Container(
+                          decoration: const BoxDecoration(
+                            color: AppColors.primary,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Padding(
+                            padding: EdgeInsets.all(12.0),
+                            child: Icon(
+                              Icons.camera_alt_outlined,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    child: const Padding(
-                      padding: EdgeInsets.all(12.0),
-                      child: Icon(
-                        Icons.camera_alt_outlined,
+                  ),
+                  const SizedBox(height: 32),
+                  AppListTile(
+                    leading: const Icon(Icons.person_outline),
+                    title: 'Name',
+                    subtitle: _name.isEmpty ? _namePlaceholder : _name,
+                    onTap: () => UIHelpers.showEditBottomSheet(
+                      context,
+                      'Name',
+                      _name,
+                      _namePlaceholder,
+                      (value) {
+                        setState(() {
+                          _name = value;
+                        });
+                      },
+                    ),
+                  ),
+                  AppListTile(
+                    leading: const Icon(Icons.info_outline),
+                    title: 'About',
+                    subtitle: _about.isEmpty ? _aboutPlaceholder : _about,
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AboutEditScreen(
+                          initialAbout: _about,
+                          onAboutChanged: (newAbout) {
+                            setState(() {
+                              _about = newAbout;
+                            });
+                            Navigator.pop(context);
+                          },
+                        ),
                       ),
                     ),
                   ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 32),
-            AppListTile(
-              leading: const Icon(Icons.person_outline),
-              title: 'Name',
-              subtitle: _name.isEmpty ? _namePlaceholder : _name,
-              onTap: () => UIHelpers.showEditBottomSheet(
-                context,
-                'Name',
-                _name,
-                _namePlaceholder,
-                (value) {
-                  setState(() {
-                    _name = value;
-                  });
-                },
-              ),
-            ),
-            AppListTile(
-              leading: const Icon(Icons.info_outline),
-              title: 'About',
-              subtitle: _about.isEmpty ? _aboutPlaceholder : _about,
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AboutEditScreen(
-                    initialAbout: _about,
-                    onAboutChanged: (newAbout) {
-                      setState(() {
-                        _about = newAbout;
-                      });
-                      Navigator.pop(context);
+                  BlocBuilder<AuthCubit, AuthState>(
+                    builder: (context, authState) {
+                      return AppListTile(
+                        leading: const Icon(Icons.phone_outlined),
+                        title: 'Phone',
+                        subtitle: authState is Authenticated
+                            ? AppFormatters.formatPhoneNumber(
+                                authState.user?.phoneNumber ?? '')
+                            : '',
+                      );
                     },
                   ),
-                ),
+                  AppSizes.verticalPaddingMax,
+                  AppElevatedButton(
+                    height: 42,
+                    width: AppScreenUtils.width * .8,
+                    onPressed: state is ProfileLoading
+                        ? null
+                        : () {
+                            //disable button when loading
+                            // context.read<ProfileCubit>().updateUserDocument(
+                            //       name: _name,
+                            //       about: _about,
+                            //       profileImage: _profileImage,
+                            //     );
+                            context.read<ProfileCubit>().addUserDocument(
+                                  name: _name,
+                                  about: _about,
+                                  profileImage: _profileImage,
+                                );
+                          },
+                    isLoading: state is ProfileLoading,
+                    text: state is ProfileLoading
+                        ? 'Updating...'
+                        : 'Update Profile', //change text when loading
+                  ),
+                ],
               ),
-            ),
-            BlocBuilder<AuthCubit, AuthState>(
-              builder: (context, authState) {
-                return AppListTile(
-                  leading: const Icon(Icons.phone_outlined),
-                  title: 'Phone',
-                  subtitle: authState is Authenticated
-                      ? AppFormatters.formatPhoneNumber(
-                          authState.user?.phoneNumber ?? '')
-                      : '',
-                );
-              },
-            ),
-            AppSizes.verticalPaddingMax,
-            AppElevatedButton(
-              height: 42,
-              width: AppScreenUtils.width * .8,
-              onPressed: () {
-                NavigationHelper.navigateTo(
-                  context,
-                  AppRouter.home,
-                  replaceAll: true,
-                );
-              },
-              text: 'Continue',
-            ),
-          ],
+            );
+          },
         ),
       ),
     );

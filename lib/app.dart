@@ -22,12 +22,12 @@ class CirlceChatApp extends StatelessWidget {
           create: (context) => ThemeCubit(),
         ),
         BlocProvider<AuthCubit>(
-          create: (context) => AuthCubit(getIt()),
+          create: (context) => getIt(),
         ),
         BlocProvider<SplashCubit>(
           create: (context) => SplashCubit(
             getIt(),
-            context.read<AuthCubit>(),
+            getIt(),
           ),
         ),
       ],

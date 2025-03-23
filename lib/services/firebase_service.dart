@@ -46,6 +46,27 @@ class FirebaseService {
     }
   }
 
+  Future<void> addUserDocument(
+      {required String userId,
+      required String name,
+      required String about,
+      String? profileImageUrl,
+      String? phoneNumber}) async {
+    await _firestore.collection('users').doc(userId).set({
+      'name': name,
+      'about': about,
+      'profileImageUrl': profileImageUrl,
+      'phoneNumber': phoneNumber,
+      'joinedAt': FieldValue.serverTimestamp(),
+    });
+  }
+
+  Future<void> updateUserDocument(
+      {required String userId,
+      required Map<String, dynamic> updateData}) async {
+    await _firestore.collection('users').doc(userId).update(updateData);
+  }
+
   Future<void> signOut() async {
     try {
       await _auth.signOut();
@@ -118,10 +139,18 @@ class FirebaseService {
   }
 
   // Storage
-  Future<String> uploadFile(File file, String path) async {
-    UploadTask uploadTask = _storage.ref(path).putFile(file);
-    TaskSnapshot snapshot = await uploadTask;
-    String downloadURL = await snapshot.ref.getDownloadURL();
-    return downloadURL;
+  Future<String> uploadFile({
+    required File file,
+    required String storagePath,
+  }) async {
+    try {
+      UploadTask uploadTask = _storage.ref(storagePath).putFile(file);
+      TaskSnapshot snapshot = await uploadTask;
+      String downloadURL = await snapshot.ref.getDownloadURL();
+      return downloadURL;
+    } catch (e) {
+      _logger.error('Error uploading file: $e');
+      rethrow;
+    }
   }
 }
