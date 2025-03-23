@@ -155,7 +155,8 @@ class PhoneAuthScreenState extends State<PhoneAuthScreen> {
                             color:
                                 Theme.of(context).textTheme.bodyMedium?.color),
                         initialValue:
-                            context.read<AuthCubit>().selectedPhoneNumber,
+                            context.read<AuthCubit>().selectedPhoneNumber ??
+                                PhoneNumber(isoCode: 'US'),
                         textFieldController: controller,
                         formatInput: true,
                         maxLength: 13,

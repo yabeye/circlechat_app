@@ -8,7 +8,7 @@ class NavigationHelper {
     BuildContext context,
     String routeName, {
     Map<String, String> params = const {},
-    bool replace = false,
+    bool replaceAll = false,
   }) {
     String path = routeName;
     if (params.isNotEmpty) {
@@ -17,7 +17,7 @@ class NavigationHelper {
       });
     }
 
-    if (replace) {
+    if (replaceAll) {
       context.go(path);
     } else {
       context.push(path);

@@ -1,8 +1,13 @@
-import 'package:circlechat_app/core/utils/ui_helpers.dart';
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:circlechat_app/core/theme/app_colors.dart';
 import 'dart:io';
+import 'package:circlechat_app/core/constants/app_sizes.dart';
+import 'package:circlechat_app/core/navigation/app_router.dart';
+import 'package:circlechat_app/core/navigation/navigation_helper.dart';
+import 'package:circlechat_app/core/utils/size_utils.dart';
+import 'package:circlechat_app/core/utils/ui_helpers.dart';
+import 'package:circlechat_app/presentation/widgets/app_widgets/app_buttons.dart';
+import 'package:circlechat_app/presentation/widgets/app_widgets/app_listtile.dart';
+import 'package:flutter/material.dart';
+import 'package:circlechat_app/core/theme/app_colors.dart';
 
 import 'about_edit_screen.dart';
 
@@ -43,9 +48,12 @@ class EditProfileScreenState extends State<EditProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
+        titleSpacing: AppSizes.globalPadding,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(vertical: 24.0),
+        padding: const EdgeInsets.symmetric(
+          vertical: AppSizes.bodyVerticalPadding,
+        ),
         child: Column(
           children: [
             GestureDetector(
@@ -83,18 +91,10 @@ class EditProfileScreenState extends State<EditProfileScreen> {
               ),
             ),
             const SizedBox(height: 32),
-            ListTile(
+            AppListTile(
               leading: const Icon(Icons.person_outline),
-              title: Text(
-                'Name',
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-              ),
-              subtitle: Text(
-                _name.isEmpty ? _namePlaceholder : _name,
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
+              title: 'Name',
+              subtitle: _name.isEmpty ? _namePlaceholder : _name,
               onTap: () => UIHelpers.showEditBottomSheet(
                 context,
                 'Name',
@@ -107,18 +107,10 @@ class EditProfileScreenState extends State<EditProfileScreen> {
                 },
               ),
             ),
-            ListTile(
+            AppListTile(
               leading: const Icon(Icons.info_outline),
-              title: Text(
-                'About',
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-              ),
-              subtitle: Text(
-                _about.isEmpty ? _aboutPlaceholder : _about,
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
+              title: 'About',
+              subtitle: _about.isEmpty ? _aboutPlaceholder : _about,
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -134,18 +126,10 @@ class EditProfileScreenState extends State<EditProfileScreen> {
                 ),
               ),
             ),
-            ListTile(
+            AppListTile(
               leading: const Icon(Icons.phone_outlined),
-              title: Text(
-                'Phone',
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-              ),
-              subtitle: Text(
-                'Your Phone Number',
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
+              title: 'Phone',
+              subtitle: 'Your Phone Number',
               onTap: () => UIHelpers.showEditBottomSheet(
                 context,
                 'Phone',
@@ -157,6 +141,19 @@ class EditProfileScreenState extends State<EditProfileScreen> {
                   });
                 },
               ),
+            ),
+            AppSizes.verticalPaddingMax,
+            AppElevatedButton(
+              height: 42,
+              width: AppScreenUtils.width * .8,
+              onPressed: () {
+                NavigationHelper.navigateTo(
+                  context,
+                  AppRouter.home,
+                  replaceAll: true,
+                );
+              },
+              text: 'Continue',
             ),
           ],
         ),

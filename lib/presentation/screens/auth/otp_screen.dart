@@ -122,7 +122,11 @@ class OtpScreenState extends State<OtpScreen> {
                           .read<AuthCubit>()
                           .signInWithPhoneNumber(pin);
                       if (!mounted) return;
-                      NavigationHelper.navigateTo(context, AppRouter.home);
+                      NavigationHelper.navigateTo(
+                        context,
+                        AppRouter.editProfile,
+                        replaceAll: true,
+                      );
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(

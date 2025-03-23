@@ -26,7 +26,7 @@ class SplashScreen extends StatelessWidget {
       NavigationHelper.navigateTo(
         context,
         AppRouter.phoneAuth,
-        replace: true,
+        replaceAll: true,
       );
     });
 

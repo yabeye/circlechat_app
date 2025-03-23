@@ -21,7 +21,7 @@ class WalkthroughScreen extends StatelessWidget {
         NavigationHelper.navigateTo(
           context,
           AppRouter.phoneAuth,
-          replace: true,
+          replaceAll: true,
         );
       },
       finishButtonStyle: const FinishButtonStyle(

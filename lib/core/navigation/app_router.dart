@@ -18,7 +18,7 @@ class AppRouter {
   static const String settings = '/settings';
 
   static GoRouter router = GoRouter(
-    initialLocation: home,
+    initialLocation: splash,
     routes: [
       GoRoute(
         path: splash,
