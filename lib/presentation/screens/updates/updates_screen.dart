@@ -2,6 +2,7 @@ import 'package:circlechat_app/core/constants/app_sizes.dart';
 import 'package:circlechat_app/core/constants/asset_files.dart';
 import 'package:circlechat_app/core/theme/app_colors.dart';
 import 'package:circlechat_app/data/models/status_model.dart';
+import 'package:circlechat_app/presentation/widgets/app_widgets/app_buttons.dart';
 import 'package:circlechat_app/presentation/widgets/app_widgets/app_listtile.dart';
 import 'package:circlechat_app/presentation/widgets/profile_avatar.dart';
 import 'package:flutter/material.dart';
@@ -85,10 +86,7 @@ class UpdatesScreen extends StatelessWidget {
                 ),
                 child: Text(
                   'Find channels to follow',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(context).textTheme.labelLarge?.color,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  style: Theme.of(context).textTheme.labelMedium,
                 ),
               ),
               AppSizes.verticalPaddingMid,
@@ -120,9 +118,9 @@ class UpdatesScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(
                   horizontal: AppSizes.globalPadding,
                 ),
-                child: TextButton(
+                child: AppTextButton(
+                  text: 'Explore more',
                   onPressed: () {},
-                  child: const Text('Explore more'),
                 ),
               ),
             ],

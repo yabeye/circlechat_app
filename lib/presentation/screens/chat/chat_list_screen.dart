@@ -1,9 +1,13 @@
+import 'package:circlechat_app/core/locator.dart';
+import 'package:circlechat_app/core/navigation/app_router.dart';
+import 'package:circlechat_app/core/navigation/navigation_helper.dart';
 import 'package:circlechat_app/core/theme/app_colors.dart';
 import 'package:circlechat_app/data/models/chat_model.dart';
 import 'package:circlechat_app/presentation/cubit/auth/auth_cubit.dart';
 import 'package:circlechat_app/presentation/cubit/chat/chat_cubit.dart';
 import 'package:circlechat_app/presentation/screens/chat/chat_app_bar.dart';
 import 'package:circlechat_app/presentation/screens/chat/chat_list_tile.dart';
+import 'package:circlechat_app/services/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
@@ -97,7 +101,9 @@ class ChatListScreenState extends State<ChatListScreen> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     onPressed: () {
-                      // TODO: Navigate to new chat screen
+                      getIt.get<NavigationService>().pushNamed(
+                            AppRouter.newChat,
+                          );
                     },
                     backgroundColor: AppColors.primary,
                     child: const Icon(

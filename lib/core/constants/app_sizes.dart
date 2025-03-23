@@ -5,6 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 abstract class AppSizes {
   // Spacings
   static const double globalPadding = 16.0;
+  static const double globalPaddingHalf = 8.0;
+
   static const double appBarLeadingWidth = 8.0;
   static const double bodyVerticalPadding = 16;
   static const double bodyHorizontalPadding = 16;

@@ -69,6 +69,7 @@ ThemeData lightTheme = ThemeData(
       labelMedium: const TextStyle(
         fontSize: 12,
         color: AppColors.greyDark,
+        fontWeight: FontWeight.w600,
       ),
     ),
   ),
@@ -85,6 +86,9 @@ ThemeData lightTheme = ThemeData(
   textButtonTheme: TextButtonThemeData(
     style: TextButton.styleFrom(
       foregroundColor: AppColors.primary,
+      textStyle: GoogleFonts.poppins(
+        fontWeight: FontWeight.w500,
+      ),
     ),
   ),
   cardTheme: CardTheme(

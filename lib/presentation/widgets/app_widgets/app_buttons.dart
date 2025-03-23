@@ -50,3 +50,27 @@ class AppElevatedButton extends StatelessWidget {
     );
   }
 }
+
+class AppTextButton extends StatelessWidget {
+  const AppTextButton({
+    required this.text,
+    this.onPressed,
+    this.textStyle,
+    super.key,
+  });
+
+  final String text;
+  final void Function()? onPressed;
+  final TextStyle? textStyle;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: onPressed,
+      child: Text(
+        text,
+        style: textStyle,
+      ),
+    );
+  }
+}
