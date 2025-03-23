@@ -1,14 +1,29 @@
 import 'package:circlechat_app/core/constants/app_constants.dart';
 import 'package:circlechat_app/core/constants/asset_files.dart';
-import 'package:circlechat_app/core/navigation/app_router.dart';
-import 'package:circlechat_app/core/navigation/navigation_helper.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:circlechat_app/presentation/cubit/auth/auth_cubit.dart';
+import 'package:circlechat_app/presentation/cubit/splash/splash_cubit.dart';
 import 'package:circlechat_app/presentation/widgets/app_widgets/app_image.dart';
 import 'package:circlechat_app/core/theme/app_colors.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:circlechat_app/core/locator.dart';
+import 'package:circlechat_app/services/local_storage_service.dart';
+import 'package:circlechat_app/services/firebase_service.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<SplashCubit>().checkNavigation();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,17 +33,6 @@ class SplashScreen extends StatelessWidget {
         statusBarIconBrightness: Brightness.light,
       ),
     );
-
-    // TODO: Move this logic to a cubit latter
-    // Temporary Fix
-    Future.delayed(const Duration(seconds: 2), () {
-      // ignore: use_build_context_synchronously
-      NavigationHelper.navigateTo(
-        context,
-        AppRouter.phoneAuth,
-        replaceAll: true,
-      );
-    });
 
     Color localTextColor = Colors.black;
 
@@ -54,7 +58,7 @@ class SplashScreen extends StatelessWidget {
                   style: Theme.of(context)
                       .textTheme
                       .headlineLarge!
-                      .copyWith(color: localTextColor), // Use theme
+                      .copyWith(color: localTextColor),
                 ),
                 const SizedBox(height: 10),
                 Text(

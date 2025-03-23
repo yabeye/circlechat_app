@@ -1,5 +1,6 @@
 import 'package:circlechat_app/core/constants/app_sizes.dart';
 import 'package:circlechat_app/core/constants/asset_files.dart';
+import 'package:circlechat_app/core/locator.dart';
 import 'package:circlechat_app/core/theme/app_colors.dart';
 import 'package:circlechat_app/data/models/chat_model.dart';
 import 'package:circlechat_app/data/models/status_model.dart';

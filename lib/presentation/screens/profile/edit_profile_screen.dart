@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'package:circlechat_app/core/constants/app_sizes.dart';
+import 'package:circlechat_app/core/locator.dart';
 import 'package:circlechat_app/core/navigation/app_router.dart';
 import 'package:circlechat_app/core/navigation/navigation_helper.dart';
+import 'package:circlechat_app/core/utils/app_formatters.dart';
 import 'package:circlechat_app/core/utils/size_utils.dart';
 import 'package:circlechat_app/core/utils/ui_helpers.dart';
 import 'package:circlechat_app/presentation/cubit/auth/auth_cubit.dart';
@@ -51,6 +53,19 @@ class EditProfileScreenState extends State<EditProfileScreen> {
       appBar: AppBar(
         title: const Text('Profile'),
         titleSpacing: AppSizes.globalPadding,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () {
+              getIt<AuthCubit>().signOut();
+              NavigationHelper.navigateTo(
+                context,
+                AppRouter.phoneAuth,
+                replaceAll: true,
+              );
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(
@@ -129,11 +144,14 @@ class EditProfileScreenState extends State<EditProfileScreen> {
               ),
             ),
             BlocBuilder<AuthCubit, AuthState>(
-              builder: (context, state) {
+              builder: (context, authState) {
                 return AppListTile(
                   leading: const Icon(Icons.phone_outlined),
                   title: 'Phone',
-                  subtitle: state is AuthSuccess ? state.user?.phoneNumber : '',
+                  subtitle: authState is Authenticated
+                      ? AppFormatters.formatPhoneNumber(
+                          authState.user?.phoneNumber ?? '')
+                      : '',
                 );
               },
             ),
@@ -142,13 +160,11 @@ class EditProfileScreenState extends State<EditProfileScreen> {
               height: 42,
               width: AppScreenUtils.width * .8,
               onPressed: () {
-                // print current auth state type
-                print(context.read<AuthCubit>().state);
-                // NavigationHelper.navigateTo(
-                //   context,
-                //   AppRouter.home,
-                //   replaceAll: true,
-                // );
+                NavigationHelper.navigateTo(
+                  context,
+                  AppRouter.home,
+                  replaceAll: true,
+                );
               },
               text: 'Continue',
             ),

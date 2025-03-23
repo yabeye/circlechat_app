@@ -24,3 +24,7 @@ abstract class AppConstants {
   static const String walkthroughTitle4 = 'Done';
   static const String walkthroughDescription4 = '';
 }
+
+class LocalStorageKeys {
+  static const String isFirstTime = 'isFirstTime';
+}

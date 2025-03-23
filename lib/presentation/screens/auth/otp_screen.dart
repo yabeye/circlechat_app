@@ -1,3 +1,4 @@
+import 'package:circlechat_app/core/locator.dart';
 import 'package:circlechat_app/core/navigation/app_router.dart';
 import 'package:circlechat_app/core/navigation/navigation_helper.dart';
 import 'package:circlechat_app/presentation/cubit/auth/auth_cubit.dart';
@@ -123,7 +124,7 @@ class OtpScreenState extends State<OtpScreen> {
                           .signInWithPhoneNumber(pin);
                       if (!mounted) return;
                       final state = context.read<AuthCubit>().state;
-                      if (state is AuthError) {
+                      if (state is AuthFailure) {
                         throw Exception(state.message);
                       }
                       NavigationHelper.navigateTo(
@@ -146,7 +147,7 @@ class OtpScreenState extends State<OtpScreen> {
               const SizedBox(height: 32),
               BlocBuilder<AuthCubit, AuthState>(
                 builder: (context, state) {
-                  bool isLoading = state is AuthLoading;
+                  bool isLoading = state is AuthInProgress;
                   return ElevatedButton(
                     onPressed: isLoading
                         ? null

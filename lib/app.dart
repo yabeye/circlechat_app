@@ -1,3 +1,4 @@
+import 'package:circlechat_app/presentation/cubit/splash/splash_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:circlechat_app/core/locator.dart';
@@ -22,6 +23,12 @@ class CirlceChatApp extends StatelessWidget {
         ),
         BlocProvider<AuthCubit>(
           create: (context) => AuthCubit(getIt()),
+        ),
+        BlocProvider<SplashCubit>(
+          create: (context) => SplashCubit(
+            getIt(),
+            context.read<AuthCubit>(),
+          ),
         ),
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(

@@ -1,3 +1,4 @@
+import 'package:circlechat_app/core/locator.dart';
 import 'package:circlechat_app/core/navigation/app_router.dart';
 import 'package:circlechat_app/core/navigation/navigation_helper.dart';
 import 'package:circlechat_app/core/utils/internalization_utils.dart';
@@ -191,9 +192,10 @@ class PhoneAuthScreenState extends State<PhoneAuthScreen> {
         ),
       ),
       floatingActionButton: BlocBuilder<AuthCubit, AuthState>(
+        // bloc: getIt<AuthCubit>(),
         builder: (context, state) {
           final isValid = (context.read<AuthCubit>().isValidPhoneNumber &&
-              state is! AuthLoading);
+              state is! AuthInProgress);
           return FloatingActionButton(
             backgroundColor: isValid ? AppColors.primary : AppColors.disabled,
             shape: RoundedRectangleBorder(
@@ -207,7 +209,7 @@ class PhoneAuthScreenState extends State<PhoneAuthScreen> {
 
                       if (!mounted) return;
 
-                      if (state is AuthError) {
+                      if (state is AuthFailure) {
                         throw Exception(state.message);
                       }
                       NavigationHelper.navigateTo(context, AppRouter.otpAuth);
@@ -220,7 +222,7 @@ class PhoneAuthScreenState extends State<PhoneAuthScreen> {
                       );
                     }
                   },
-            child: state is AuthLoading
+            child: state is AuthInProgress
                 ? const Center(
                     child: CircularProgressIndicator(
                       valueColor: AlwaysStoppedAnimation(Colors.white),

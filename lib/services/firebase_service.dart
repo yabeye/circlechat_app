@@ -1,13 +1,20 @@
 import 'package:circlechat_app/core/errors.dart';
+import 'package:circlechat_app/core/locator.dart';
+import 'package:circlechat_app/services/logging_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
 
 class FirebaseService {
+  FirebaseService()
+      : _logger = getIt<LoggingService>(),
+        super();
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
+  final LoggingService _logger;
 
   // Authentication
   Future<UserCredential> signInWithPhoneNumber(
@@ -22,6 +29,20 @@ class FirebaseService {
       throw AppException(e.message ?? 'Sign-in failed.');
     } catch (e) {
       throw AppException('An unexpected error occurred during sign-in.');
+    }
+  }
+
+  Future<bool> userDocumentExists(String userId) async {
+    try {
+      final userDoc = await _firestore.collection('users').doc(userId).get();
+      return userDoc.exists;
+    } catch (e, stackTrace) {
+      _logger.error(
+        'Error checking user document existence: $e',
+        error: e,
+        stackTrace: stackTrace,
+      );
+      return false;
     }
   }
 

@@ -1,12 +1,17 @@
 import 'package:circlechat_app/core/constants/app_constants.dart';
 import 'package:circlechat_app/core/constants/asset_files.dart';
+import 'package:circlechat_app/core/locator.dart';
 import 'package:circlechat_app/core/navigation/app_router.dart';
 import 'package:circlechat_app/core/navigation/navigation_helper.dart';
+import 'package:circlechat_app/presentation/cubit/splash/splash_cubit.dart';
 import 'package:circlechat_app/presentation/widgets/app_widgets/app_image.dart';
+import 'package:circlechat_app/services/local_storage_service.dart';
+import 'package:circlechat_app/services/logging_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_onboarding_slider/flutter_onboarding_slider.dart';
 import 'package:circlechat_app/core/theme/app_colors.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class WalkthroughScreen extends StatelessWidget {
   const WalkthroughScreen({super.key});
@@ -17,12 +22,22 @@ class WalkthroughScreen extends StatelessWidget {
 
     return OnBoardingSlider(
       finishButtonText: 'Start Messaging',
-      onFinish: () {
-        NavigationHelper.navigateTo(
-          context,
-          AppRouter.phoneAuth,
-          replaceAll: true,
-        );
+      onFinish: () async {
+        try {
+          await context.read<SplashCubit>().tickFirstTime();
+
+          if (context.mounted) {
+            NavigationHelper.navigateTo(
+              context,
+              AppRouter.phoneAuth,
+              replaceAll: true,
+            );
+          }
+        } catch (e) {
+          getIt
+              .get<LoggingService>()
+              .error('WalkthroughScreen', error: e.toString());
+        }
       },
       finishButtonStyle: const FinishButtonStyle(
         backgroundColor: AppColors.primary,

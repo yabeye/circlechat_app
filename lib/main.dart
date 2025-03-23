@@ -22,7 +22,7 @@ Future<void> main() async {
     appleProvider: AppleProvider.debug,
   );
 
-  setupLocator();
+  await setupLocator();
 
   Bloc.observer = AppObserver();
 
