@@ -1,7 +1,9 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:circlechat_app/presentation/cubit/presence/presence_cubit.dart';
 import 'package:circlechat_app/presentation/screens/chat/chat_list_screen.dart';
 import 'package:circlechat_app/presentation/screens/communities/communities_list_screen.dart';
 import 'package:circlechat_app/presentation/screens/updates/updates_screen.dart';
-import 'package:flutter/material.dart';
 
 import 'app_bottom_navigation_bar.dart';
 
@@ -15,6 +17,12 @@ class HomeScreen extends StatefulWidget {
 class HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
   final PageController _pageController = PageController();
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<PresenceCubit>().startPresenceTimer();
+  }
 
   static const List<Widget> _homePages = <Widget>[
     ChatListScreen(),

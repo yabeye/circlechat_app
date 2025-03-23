@@ -1,11 +1,12 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:circlechat_app/core/constants/app_sizes.dart';
 import 'package:circlechat_app/core/constants/asset_files.dart';
 import 'package:circlechat_app/core/theme/app_theme.dart';
 import 'package:circlechat_app/data/models/status_model.dart';
 import 'package:circlechat_app/presentation/cubit/auth/auth_cubit.dart';
+import 'package:circlechat_app/presentation/cubit/presence/presence_cubit.dart';
 import 'package:circlechat_app/presentation/widgets/app_widgets/app_image.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfileAvatar extends StatelessWidget {
   const ProfileAvatar({
@@ -17,6 +18,7 @@ class ProfileAvatar extends StatelessWidget {
     this.width,
     this.height,
     this.status,
+    this.showOnline = true,
   });
 
   final String profileId;
@@ -26,11 +28,12 @@ class ProfileAvatar extends StatelessWidget {
   final double? width;
   final double? height;
   final StatusModel? status;
+  final bool showOnline;
 
   @override
   Widget build(BuildContext context) {
     final hasProfilePic = (imageUrl ?? '').isNotEmpty;
-
+    final profileId = this.profileId.replaceAll(' ', '_');
     double width = this.width ?? AppSizes.profilePicSize;
     double height = this.height ?? AppSizes.profilePicSize;
 
@@ -39,6 +42,8 @@ class ProfileAvatar extends StatelessWidget {
       width *= .8;
       height *= .8;
     }
+
+    // context.read<PresenceCubit>().startPresenceListener(profileId);
 
     return BlocBuilder<AuthCubit, AuthState>(
       builder: (context, state) {
@@ -71,6 +76,44 @@ class ProfileAvatar extends StatelessWidget {
                         : KIcons.defaultProfilePic(),
               ),
             ),
+            // online show
+            if (showOnline && !isMyProfile)
+              BlocProvider<PresenceCubit>(
+                create: (context) => PresenceCubit(),
+                child: BlocBuilder<PresenceCubit, PresenceState>(
+                  builder: (context, state) {
+                    if (state is PresenceInitial) {
+                      context
+                          .read<PresenceCubit>()
+                          .startPresenceListener(profileId);
+                    }
+                    if (state is PresenceUpdated) {
+                      if (state.isOnline) {
+                        return Positioned(
+                          right: 0,
+                          bottom: 0,
+                          child: Container(
+                            width: 15,
+                            height: 15,
+                            decoration: BoxDecoration(
+                              color: darkTheme.primaryColor,
+                              borderRadius: BorderRadius.circular(100),
+                              border: Border.all(
+                                color:
+                                    Theme.of(context).scaffoldBackgroundColor,
+                                width: 2,
+                              ),
+                            ),
+                          ),
+                        );
+                      }
+                      return const SizedBox.shrink();
+                    }
+
+                    return const SizedBox.shrink();
+                  },
+                ),
+              ),
             if (isMyProfile)
               Positioned(
                 right: 0,

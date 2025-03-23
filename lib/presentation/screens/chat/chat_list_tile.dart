@@ -49,7 +49,7 @@ class ChatListTileState extends State<ChatListTile> {
           clipBehavior: Clip.none,
           children: [
             ProfileAvatar(
-              profileId: widget.chatModel.chatName ?? '',
+              profileId: widget.chatModel.id,
               isGroup: widget.chatModel.isGroup ?? false,
               imageUrl:
                   'https://yt3.googleusercontent.com/2KbDSaZ6r5w_kXcG1LukeN3NfXnt7QxvgRCn-jmb3AalU7QR3rCRArQWNOBATRFNXMbspoYB=s900-c-k-c0x00ffffff-no-rj',

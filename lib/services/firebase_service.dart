@@ -1,10 +1,11 @@
+import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:circlechat_app/core/errors.dart';
 import 'package:circlechat_app/core/locator.dart';
 import 'package:circlechat_app/services/logging_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'dart:io';
 
 class FirebaseService {
   FirebaseService()
@@ -13,6 +14,8 @@ class FirebaseService {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final _database = FirebaseDatabase.instance.ref();
+
   final FirebaseStorage _storage = FirebaseStorage.instance;
   final LoggingService _logger;
 
@@ -110,7 +113,7 @@ class FirebaseService {
     }
   }
 
-  // Firestore
+  // Users
   Future<void> createUserDocument(
       String uid, Map<String, dynamic> userData) async {
     await _firestore.collection('users').doc(uid).set(userData);
@@ -140,6 +143,26 @@ class FirebaseService {
 
   Stream<DocumentSnapshot> getUserDocumentStream(String userId) {
     return _firestore.collection('users').doc(userId).snapshots();
+  }
+
+  // Presence
+  Future<void> setUserPresence(
+    String userId,
+    bool isOnline,
+    DateTime lastSeen,
+  ) async {
+    try {
+      await _database.child('presence/$userId').set({
+        'isOnline': isOnline,
+        'lastSeen': lastSeen.millisecondsSinceEpoch,
+      });
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Stream<DatabaseEvent> getUserPresenceStream(String userId) {
+    return _database.child('presence/$userId').onValue;
   }
 
   // Storage

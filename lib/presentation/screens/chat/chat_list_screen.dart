@@ -23,10 +23,14 @@ class ChatListScreenState extends State<ChatListScreen> {
   void initState() {
     super.initState();
     chatData = List.generate(20, (index) {
-      final id = index.toString();
+      final id = index == 6 ? 'rcNzgFPfQceulfL06IkIuI2Qem03' : index.toString();
       return ChatModel(
         id: id,
-        chatName: index % 2 == 0 ? 'Group Chat $index' : 'Contact $index',
+        chatName: index == 6
+            ? 'FruitDestroyer88'
+            : index % 2 == 0
+                ? 'Group Chat $index'
+                : 'Contact $index',
         lastMessage: 'Last message from chat $index',
         messageTime: '10:00 AM',
         isPinned: _pinnedChatIds.contains(id),
