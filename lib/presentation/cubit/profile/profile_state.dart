@@ -12,3 +12,8 @@ class ProfileFailure extends ProfileState {
   ProfileFailure(this.errorMessage);
   final String errorMessage;
 }
+
+class UserDataLoaded extends ProfileState {
+  UserDataLoaded(this.userData);
+  final UserModel userData;
+}

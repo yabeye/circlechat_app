@@ -1,6 +1,5 @@
 import 'package:circlechat_app/core/constants/app_sizes.dart';
 import 'package:circlechat_app/core/constants/asset_files.dart';
-import 'package:circlechat_app/core/locator.dart';
 import 'package:circlechat_app/core/theme/app_theme.dart';
 import 'package:circlechat_app/data/models/status_model.dart';
 import 'package:circlechat_app/presentation/cubit/auth/auth_cubit.dart';

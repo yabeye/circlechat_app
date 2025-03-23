@@ -138,6 +138,10 @@ class FirebaseService {
     return _firestore.collection(collection).doc(documentId).snapshots();
   }
 
+  Stream<DocumentSnapshot> getUserDocumentStream(String userId) {
+    return _firestore.collection('users').doc(userId).snapshots();
+  }
+
   // Storage
   Future<String> uploadFile({
     required File file,

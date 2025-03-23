@@ -10,10 +10,13 @@ class UserModel {
     this.joinedAt,
   });
 
-  factory UserModel.fromJson(Map<String, dynamic> json) {
+  factory UserModel.fromJson(
+    Map<String, dynamic> json, {
+    String? id,
+  }) {
     return UserModel(
-      uid: json['uid'] as String,
-      name: json['name'] as String,
+      uid: id ?? json['uid'],
+      name: json['name'] as String? ?? '',
       about: json['about'] as String?,
       profileImageUrl: json['profileImageUrl'] as String?,
       phoneNumber: json['phoneNumber'] as String?,

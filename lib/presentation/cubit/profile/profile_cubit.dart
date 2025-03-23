@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:io';
+import 'package:circlechat_app/data/models/user_model.dart';
 import 'package:circlechat_app/presentation/cubit/auth/auth_cubit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:circlechat_app/services/logging_service.dart';
@@ -7,17 +9,21 @@ import 'package:circlechat_app/services/firebase_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
 import 'package:path/path.dart' as path;
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 part 'profile_state.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
   ProfileCubit(this._authCubit)
       : _logger = getIt<LoggingService>(),
-        super(ProfileInitial());
+        super(ProfileInitial()) {
+    _startUserDocumentListener(); // Start listener in constructor
+  }
 
   final AuthCubit _authCubit;
   final LoggingService _logger;
   final FirebaseService _firebaseService = getIt<FirebaseService>();
+  StreamSubscription<DocumentSnapshot>? _userDocumentSubscription;
 
   Future<void> addUserDocument({
     required String name,
@@ -78,9 +84,7 @@ class ProfileCubit extends Cubit<ProfileState> {
       String? profileImageUrl;
 
       if (profileImage != null) {
-        // Implement your image upload logic here
-        // For example, using Firebase Storage
-        // profileImageUrl = await _uploadImage(profileImage, user.uid);
+        profileImageUrl = await _uploadProfileImage(profileImage, user.uid);
       }
 
       Map<String, dynamic> updateData = {};
@@ -124,5 +128,35 @@ class ProfileCubit extends Cubit<ProfileState> {
     } catch (e) {
       rethrow;
     }
+  }
+
+  void _startUserDocumentListener() async {
+    final User? user = _authCubit.state is Authenticated
+        ? (_authCubit.state as Authenticated).user
+        : null;
+
+    if (user == null) {
+      return;
+    }
+
+    _userDocumentSubscription =
+        _firebaseService.getUserDocumentStream(user.uid).listen((snapshot) {
+      if (snapshot.exists) {
+        emit(
+          UserDataLoaded(
+            UserModel.fromJson(
+              id: snapshot.id,
+              snapshot.data() as Map<String, dynamic>,
+            ),
+          ),
+        );
+      }
+    });
+  }
+
+  @override
+  Future<void> close() {
+    _userDocumentSubscription?.cancel();
+    return super.close();
   }
 }
