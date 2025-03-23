@@ -1,15 +1,11 @@
 import 'package:circlechat_app/core/constants/app_constants.dart';
 import 'package:circlechat_app/core/constants/asset_files.dart';
-import 'package:circlechat_app/presentation/cubit/auth/auth_cubit.dart';
 import 'package:circlechat_app/presentation/cubit/splash/splash_cubit.dart';
 import 'package:circlechat_app/presentation/widgets/app_widgets/app_image.dart';
 import 'package:circlechat_app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:circlechat_app/core/locator.dart';
-import 'package:circlechat_app/services/local_storage_service.dart';
-import 'package:circlechat_app/services/firebase_service.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

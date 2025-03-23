@@ -16,7 +16,7 @@ class ChatListScreen extends StatefulWidget {
 }
 
 class ChatListScreenState extends State<ChatListScreen> {
-  List<String> _pinnedChatIds = [];
+  final List<String> _pinnedChatIds = [];
   List<ChatModel> chatData = [];
 
   @override

@@ -1,6 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-
 class InternalizationUtils {
   static Map<String, Map<String, String>> countryDetails = {
     'US': {'name': 'United States', 'flag': '🇺🇸'},

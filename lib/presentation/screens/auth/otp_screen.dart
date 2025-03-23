@@ -1,4 +1,3 @@
-import 'package:circlechat_app/core/locator.dart';
 import 'package:circlechat_app/core/navigation/app_router.dart';
 import 'package:circlechat_app/core/navigation/navigation_helper.dart';
 import 'package:circlechat_app/presentation/cubit/auth/auth_cubit.dart';
@@ -30,7 +29,6 @@ class OtpScreenState extends State<OtpScreen> {
   @override
   Widget build(BuildContext context) {
     const focusedBorderColor = AppColors.primary;
-    const fillColor = Color.fromRGBO(243, 246, 249, 0);
     const borderColor = Colors.grey;
 
     final defaultPinTheme = PinTheme(
@@ -145,40 +143,6 @@ class OtpScreenState extends State<OtpScreen> {
                 ),
               ),
               const SizedBox(height: 32),
-              BlocBuilder<AuthCubit, AuthState>(
-                builder: (context, state) {
-                  bool isLoading = state is AuthInProgress;
-                  return ElevatedButton(
-                    onPressed: isLoading
-                        ? null
-                        : () {
-                            if (formKey.currentState!.validate()) {
-                              // TODO: Implement OTP verification logic here
-                              debugPrint('Verify OTP: ${pinController.text}');
-                            }
-                          },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    child: isLoading
-                        ? const CircularProgressIndicator(
-                            valueColor:
-                                AlwaysStoppedAnimation<Color>(Colors.white),
-                          )
-                        : Text(
-                            'Verify',
-                            style: GoogleFonts.poppins(
-                              fontSize: 18,
-                              color: Colors.white,
-                            ),
-                          ),
-                  );
-                },
-              ),
             ],
           ),
         ),

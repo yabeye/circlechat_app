@@ -1,12 +1,9 @@
-import 'package:circlechat_app/core/locator.dart';
 import 'package:circlechat_app/core/navigation/app_router.dart';
 import 'package:circlechat_app/core/navigation/navigation_helper.dart';
 import 'package:circlechat_app/core/utils/internalization_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
-import 'package:circlechat_app/presentation/widgets/app_widgets/app_image.dart';
 import 'package:circlechat_app/core/theme/app_colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:circlechat_app/presentation/cubit/auth/auth_cubit.dart'; // Import AuthCubit
@@ -66,30 +63,26 @@ class PhoneAuthScreenState extends State<PhoneAuthScreen> {
                       children: [
                         Container(
                           decoration: BoxDecoration(
-                            // color: Theme.of(context).cardColor.withOpacity(0.5),
+                            // color: Theme.of(context).cardColor.withValues(alpha: .5),
                             border: Border.all(
                               color: (Theme.of(context)
                                           .textTheme
                                           .bodyLarge
                                           ?.color ??
                                       Colors.black)
-                                  .withOpacity(0.1),
+                                  .withValues(alpha: .1),
                             ),
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                           child: ListTile(
-                            leading: countryCode == null
-                                ? null
-                                : Text(
-                                    InternalizationUtils.getCountryFlag(
-                                      countryCode,
-                                    ),
-                                    style: const TextStyle(fontSize: 20),
-                                  ),
+                            leading: Text(
+                              InternalizationUtils.getCountryFlag(
+                                countryCode,
+                              ),
+                              style: const TextStyle(fontSize: 20),
+                            ),
                             title: Text(
-                              countryCode == null
-                                  ? 'Select Country'
-                                  : '${InternalizationUtils.getCountryName(countryCode)} ($countryCode)',
+                              '${InternalizationUtils.getCountryName(countryCode)} ($countryCode)',
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium!
@@ -121,8 +114,6 @@ class PhoneAuthScreenState extends State<PhoneAuthScreen> {
                 const SizedBox(height: 16),
                 BlocBuilder<AuthCubit, AuthState>(
                   builder: (context, state) {
-                    String countryCode = state.phoneNumber?.isoCode ?? 'US';
-
                     // if (countryCode == null) return const SizedBox.shrink();
 
                     return Container(
@@ -131,7 +122,7 @@ class PhoneAuthScreenState extends State<PhoneAuthScreen> {
                         borderRadius: BorderRadius.circular(8.0),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
+                            color: Colors.black.withValues(alpha: .1),
                             spreadRadius: 1,
                             blurRadius: 5,
                             offset: const Offset(0, 3),
@@ -142,14 +133,11 @@ class PhoneAuthScreenState extends State<PhoneAuthScreen> {
                         onInputChanged: (PhoneNumber number) {
                           context.read<AuthCubit>().setPhoneNumber(number);
                         },
-                        onInputValidated: (bool value) {
-                          print(value);
-                        },
+                        onInputValidated: (bool value) {},
                         selectorConfig: const SelectorConfig(
                           selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
                           useBottomSheetSafeArea: true,
                         ),
-                        ignoreBlank: false,
                         autoFocus: true,
                         // autoValidateMode: AutovalidateMode.disabled,
                         selectorTextStyle: TextStyle(
@@ -159,7 +147,6 @@ class PhoneAuthScreenState extends State<PhoneAuthScreen> {
                             context.read<AuthCubit>().selectedPhoneNumber ??
                                 PhoneNumber(isoCode: 'US'),
                         textFieldController: controller,
-                        formatInput: true,
                         maxLength: 13,
                         // keyboardType: TextInputType.phone,
                         inputBorder: InputBorder.none,
@@ -175,12 +162,10 @@ class PhoneAuthScreenState extends State<PhoneAuthScreen> {
                                 .textTheme
                                 .bodyMedium
                                 ?.color
-                                ?.withOpacity(0.6),
+                                ?.withValues(alpha: .6),
                           ),
                         ),
-                        onSaved: (PhoneNumber number) {
-                          print('On Saved: $number');
-                        },
+                        onSaved: (PhoneNumber number) {},
                       ),
                     );
                   },

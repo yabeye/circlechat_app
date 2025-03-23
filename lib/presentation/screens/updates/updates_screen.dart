@@ -2,7 +2,6 @@ import 'package:circlechat_app/core/constants/app_sizes.dart';
 import 'package:circlechat_app/core/constants/asset_files.dart';
 import 'package:circlechat_app/core/theme/app_colors.dart';
 import 'package:circlechat_app/data/models/status_model.dart';
-import 'package:circlechat_app/presentation/screens/chat/chat_list_tile.dart';
 import 'package:circlechat_app/presentation/widgets/app_widgets/app_listtile.dart';
 import 'package:circlechat_app/presentation/widgets/profile_avatar.dart';
 import 'package:flutter/material.dart';

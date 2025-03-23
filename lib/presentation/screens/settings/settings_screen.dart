@@ -1,7 +1,5 @@
 import 'package:circlechat_app/core/constants/app_sizes.dart';
 import 'package:circlechat_app/core/locator.dart';
-import 'package:circlechat_app/core/theme/app_colors.dart';
-import 'package:circlechat_app/core/utils/size_utils.dart';
 import 'package:circlechat_app/presentation/cubit/profile/profile_cubit.dart';
 import 'package:circlechat_app/presentation/widgets/app_widgets/app_listtile.dart';
 import 'package:circlechat_app/presentation/widgets/profile_avatar.dart';

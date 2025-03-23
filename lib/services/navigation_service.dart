@@ -1,11 +1,8 @@
-// lib/services/navigation_service.dart
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class NavigationService {
-  final GoRouter router;
-
   NavigationService(this.router);
+  final GoRouter router;
 
   void navigateTo(String routeName,
       {Map<String, String> params = const {}, Object? extra}) {

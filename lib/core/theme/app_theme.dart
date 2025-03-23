@@ -60,7 +60,7 @@ ThemeData lightTheme = ThemeData(
       bodySmall: TextStyle(
         fontWeight: FontWeight.w500,
         fontSize: 11,
-        color: AppColors.textLight.withOpacity(0.7),
+        color: AppColors.textLight.withValues(alpha: 0.7),
       ),
       labelLarge: const TextStyle(
         fontSize: 14,
@@ -117,7 +117,7 @@ ThemeData lightTheme = ThemeData(
     ),
   ),
   dividerTheme: DividerThemeData(
-    color: AppColors.textLight.withOpacity(0.2),
+    color: AppColors.textLight.withValues(alpha: .2),
     thickness: 1,
     space: 8,
   ),
@@ -137,7 +137,7 @@ ThemeData lightTheme = ThemeData(
     subtitleTextStyle: GoogleFonts.poppins(
       fontSize: 14,
       fontWeight: FontWeight.w400,
-      // color: AppColors.textLight.withOpacity(0.6),
+      // color: AppColors.textLight.withValues(alpha: .6),
       color: AppColors.greyDark,
     ),
   ),
@@ -176,7 +176,7 @@ ThemeData darkTheme = ThemeData(
       ),
       bodyMedium: TextStyle(
         fontSize: 16,
-        color: AppColors.textDark.withOpacity(0.7), // Or Colors.white70
+        color: AppColors.textDark.withValues(alpha: .7), // Or Colors.white70
       ),
     ),
   ),

@@ -5,7 +5,6 @@ import 'package:circlechat_app/core/navigation/app_router.dart';
 import 'package:circlechat_app/core/navigation/navigation_helper.dart';
 import 'package:circlechat_app/presentation/cubit/splash/splash_cubit.dart';
 import 'package:circlechat_app/presentation/widgets/app_widgets/app_image.dart';
-import 'package:circlechat_app/services/local_storage_service.dart';
 import 'package:circlechat_app/services/logging_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_onboarding_slider/flutter_onboarding_slider.dart';
@@ -90,13 +89,13 @@ class WalkthroughScreen extends StatelessWidget {
 }
 
 class _WalkthroughPageBody extends StatelessWidget {
-  final String title;
-  final String description;
 
   const _WalkthroughPageBody({
     required this.title,
     required this.description,
   });
+  final String title;
+  final String description;
 
   @override
   Widget build(BuildContext context) {
