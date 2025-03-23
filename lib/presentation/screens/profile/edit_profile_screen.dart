@@ -4,10 +4,12 @@ import 'package:circlechat_app/core/navigation/app_router.dart';
 import 'package:circlechat_app/core/navigation/navigation_helper.dart';
 import 'package:circlechat_app/core/utils/size_utils.dart';
 import 'package:circlechat_app/core/utils/ui_helpers.dart';
+import 'package:circlechat_app/presentation/cubit/auth/auth_cubit.dart';
 import 'package:circlechat_app/presentation/widgets/app_widgets/app_buttons.dart';
 import 'package:circlechat_app/presentation/widgets/app_widgets/app_listtile.dart';
 import 'package:flutter/material.dart';
 import 'package:circlechat_app/core/theme/app_colors.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'about_edit_screen.dart';
 
@@ -126,32 +128,27 @@ class EditProfileScreenState extends State<EditProfileScreen> {
                 ),
               ),
             ),
-            AppListTile(
-              leading: const Icon(Icons.phone_outlined),
-              title: 'Phone',
-              subtitle: 'Your Phone Number',
-              onTap: () => UIHelpers.showEditBottomSheet(
-                context,
-                'Phone',
-                'Your Phone Number',
-                'Enter your phone number',
-                (value) {
-                  setState(() {
-                    _about = value;
-                  });
-                },
-              ),
+            BlocBuilder<AuthCubit, AuthState>(
+              builder: (context, state) {
+                return AppListTile(
+                  leading: const Icon(Icons.phone_outlined),
+                  title: 'Phone',
+                  subtitle: state is AuthSuccess ? state.user?.phoneNumber : '',
+                );
+              },
             ),
             AppSizes.verticalPaddingMax,
             AppElevatedButton(
               height: 42,
               width: AppScreenUtils.width * .8,
               onPressed: () {
-                NavigationHelper.navigateTo(
-                  context,
-                  AppRouter.home,
-                  replaceAll: true,
-                );
+                // print current auth state type
+                print(context.read<AuthCubit>().state);
+                // NavigationHelper.navigateTo(
+                //   context,
+                //   AppRouter.home,
+                //   replaceAll: true,
+                // );
               },
               text: 'Continue',
             ),

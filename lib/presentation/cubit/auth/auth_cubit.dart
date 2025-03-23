@@ -21,7 +21,8 @@ class AuthCubit extends Cubit<AuthState> {
 
   String? get userId => 'my-dummy-uid';
   bool isMyId(String? userId) => userId == this.userId;
-  // String? get userId => _firebaseService.getCurrentUser()?.uid;
+
+  bool _authSuccess = false;
 
   void setPhoneNumber(PhoneNumber phoneNumber) {
     selectedPhoneNumber = phoneNumber;
@@ -33,6 +34,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> sendVerificationCode() async {
     final String phoneNumber = selectedPhoneNumber?.phoneNumber ?? '';
+    _logger.debug('Sending verification code to $phoneNumber');
     if (phoneNumber.isEmpty) {
       emit(
         AuthError(
@@ -44,15 +46,15 @@ class AuthCubit extends Cubit<AuthState> {
     }
 
     emit(AuthLoading(selectedPhoneNumber));
-    await Future.delayed(const Duration(seconds: 5));
-    emit(VerificationCodeSent(selectedPhoneNumber, 'selectedPhoneNumber'));
+    _authSuccess = false;
 
-    return;
+    await signOut();
     try {
       await _firebaseService.sendVerificationCode(
         phoneNumber,
         (UserCredential userCredential) async {
-          emit(AuthSuccess(selectedPhoneNumber, userCredential.user!));
+          _authSuccess = true;
+          emit(AuthSuccess(selectedPhoneNumber, userCredential.user));
         },
         (AppException e) {
           emit(AuthError(selectedPhoneNumber, e.message));
@@ -62,8 +64,11 @@ class AuthCubit extends Cubit<AuthState> {
           emit(VerificationCodeSent(selectedPhoneNumber, verificationId));
         },
         (String verificationId) {
-          emit(AuthError(selectedPhoneNumber, 'Verification timeout.'));
-          _logger.warning('Verification timeout: $verificationId');
+          if (!_authSuccess) {
+            // Check the flag before emitting error
+            emit(AuthError(selectedPhoneNumber, 'Verification timeout.'));
+            _logger.warning('Verification timeout: $verificationId');
+          }
         },
       );
     } catch (e, stackTrace) {
@@ -81,19 +86,18 @@ class AuthCubit extends Cubit<AuthState> {
       verificationId = (state as VerificationCodeSent).verificationId;
     }
 
+    _logger.debug('Signing in with PHONE: $selectedPhoneNumber, SMS:$smsCode');
+
     emit(AuthLoading(selectedPhoneNumber));
+    _authSuccess = false;
 
-    await Future.delayed(const Duration(seconds: 3));
-
-    emit(AuthSuccess(selectedPhoneNumber, null));
-
-    return;
     try {
       final userCredential = await _firebaseService.signInWithPhoneNumber(
         smsCode,
         verificationId,
       );
-      emit(AuthSuccess(selectedPhoneNumber, userCredential.user!));
+      _authSuccess = true;
+      emit(AuthSuccess(selectedPhoneNumber, userCredential.user));
     } on AppException catch (e) {
       emit(AuthError(selectedPhoneNumber, e.message));
       _logger.error('Sign-in failed: ${e.message}', error: e);

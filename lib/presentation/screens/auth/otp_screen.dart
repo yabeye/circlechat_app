@@ -122,6 +122,10 @@ class OtpScreenState extends State<OtpScreen> {
                           .read<AuthCubit>()
                           .signInWithPhoneNumber(pin);
                       if (!mounted) return;
+                      final state = context.read<AuthCubit>().state;
+                      if (state is AuthError) {
+                        throw Exception(state.message);
+                      }
                       NavigationHelper.navigateTo(
                         context,
                         AppRouter.editProfile,
