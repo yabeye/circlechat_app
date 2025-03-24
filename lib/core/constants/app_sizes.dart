@@ -9,7 +9,7 @@ abstract class AppSizes {
 
   static const double appBarLeadingWidth = 8.0;
   static const double bodyVerticalPadding = 16;
-  static const double bodyHorizontalPadding = 16;
+  static const double bodyHorizontalPadding = 8;
   static const bodyPadding = EdgeInsets.symmetric(
     vertical: bodyVerticalPadding,
     horizontal: bodyHorizontalPadding,

@@ -1,17 +1,15 @@
 import 'package:circlechat_app/core/locator.dart';
 import 'package:circlechat_app/core/navigation/app_router.dart';
-import 'package:circlechat_app/core/navigation/navigation_helper.dart';
 import 'package:circlechat_app/core/theme/app_colors.dart';
 import 'package:circlechat_app/data/models/chat_model.dart';
-import 'package:circlechat_app/presentation/cubit/auth/auth_cubit.dart';
 import 'package:circlechat_app/presentation/cubit/chat/chat_cubit.dart';
+import 'package:circlechat_app/presentation/cubit/chat/chat_list_cubit.dart';
 import 'package:circlechat_app/presentation/screens/chat/chat_app_bar.dart';
 import 'package:circlechat_app/presentation/screens/chat/chat_list_tile.dart';
 import 'package:circlechat_app/presentation/widgets/app_widgets/app_scaffold.dart';
 import 'package:circlechat_app/services/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:uuid/uuid.dart';
 
 class ChatListScreen extends StatefulWidget {
   const ChatListScreen({super.key});
@@ -21,32 +19,9 @@ class ChatListScreen extends StatefulWidget {
 }
 
 class ChatListScreenState extends State<ChatListScreen> {
-  final List<String> _pinnedChatIds = [];
-  List<ChatModel> chatData = [];
-
   @override
   void initState() {
     super.initState();
-    chatData = List.generate(20, (index) {
-      final id = index == 6 ? 'rcNzgFPfQceulfL06IkIuI2Qem03' : index.toString();
-      return ChatModel(
-        id: id,
-        chatName: index == 6
-            ? 'FruitDestroyer88'
-            : index % 2 == 0
-                ? 'Group Chat $index'
-                : 'Contact $index',
-        lastMessage: 'Last message from chat $index',
-        messageTime: '10:00 AM',
-        isPinned: _pinnedChatIds.contains(id),
-        isSeen: index % 4 == 0,
-        isGroup: index % 3 == 0,
-        lastMessageUserId: index % 3 == 0
-            ? context.read<AuthCubit>().userId
-            : const Uuid().v4(),
-        isVerified: index == 0 || index == 4,
-      );
-    });
   }
 
   @override
@@ -54,45 +29,46 @@ class ChatListScreenState extends State<ChatListScreen> {
     return BlocProvider(
       create: (context) => ChatCubit(),
       child: BlocBuilder<ChatCubit, ChatState>(
-        builder: (context, state) {
-          bool isSelecting = state.selectedChatIds.isNotEmpty;
-
-          chatData.sort((a, b) {
-            if (a.isPinned == true && b.isPinned == false) {
-              return -1;
-            } else if (a.isPinned == false && b.isPinned == true) {
-              return 1;
-            } else {
-              return 0;
-            }
-          });
+        builder: (context, chatState) {
+          bool isSelecting = chatState.selectedChatIds.isNotEmpty;
 
           return AppScaffold(
             appBar: isSelecting
                 ? const ChatSelectingAppBar()
                 : const ChatMainAppBar(),
-            body: ListView.builder(
-              itemCount: chatData.length,
-              itemBuilder: (context, index) {
-                return ChatListTile(
-                  chatModel: chatData[index],
-                  onSelectChanged: (isSelected) {
-                    context
-                        .read<ChatCubit>()
-                        .toggleSelection(chatData[index].id);
-                  },
-                  isSelected:
-                      state.selectedChatIds.contains(chatData[index].id),
-                  onTap: () {
-                    if (isSelecting) {
-                      context
-                          .read<ChatCubit>()
-                          .toggleSelection(chatData[index].id);
-                    } else {
-                      // TODO: Navigate to chat details screen
-                    }
-                  },
-                );
+            body: BlocBuilder<ChatListCubit, ChatListState>(
+              builder: (context, state) {
+                if (state is ChatListInitial) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (state is ChatListLoaded) {
+                  final chatData = state.chats;
+                  return ListView.builder(
+                    itemCount: chatData.length,
+                    itemBuilder: (context, index) {
+                      return ChatListTile(
+                        chatModel: chatData[index],
+                        onSelectChanged: (isSelected) {
+                          context
+                              .read<ChatCubit>()
+                              .toggleSelection(chatData[index].id ?? '');
+                        },
+                        isSelected: chatState.selectedChatIds
+                            .contains(chatData[index].id),
+                        onTap: () {
+                          if (isSelecting) {
+                            context
+                                .read<ChatCubit>()
+                                .toggleSelection(chatData[index].id ?? '');
+                          } else {
+                            // TODO: Navigate to chat details screen
+                          }
+                        },
+                      );
+                    },
+                  );
+                }
+                return const SizedBox.shrink();
               },
             ),
             floatingActionButton: isSelecting

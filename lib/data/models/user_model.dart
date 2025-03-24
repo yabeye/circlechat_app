@@ -8,6 +8,7 @@ class UserModel {
     this.profileImageUrl,
     this.phoneNumber,
     this.joinedAt,
+    this.isVerified = false,
   });
 
   factory UserModel.fromJson(
@@ -21,6 +22,7 @@ class UserModel {
       profileImageUrl: json['profileImageUrl'] as String?,
       phoneNumber: json['phoneNumber'] as String?,
       joinedAt: (json['joinedAt'] as Timestamp?)?.toDate(),
+      isVerified: json['isVerified'] as bool? ?? false,
     );
   }
 
@@ -30,6 +32,7 @@ class UserModel {
   final String? profileImageUrl;
   final String? phoneNumber;
   final DateTime? joinedAt;
+  final bool isVerified;
 
   Map<String, dynamic> toJson() {
     return {
@@ -39,6 +42,7 @@ class UserModel {
       'profileImageUrl': profileImageUrl,
       'phoneNumber': phoneNumber,
       'joinedAt': joinedAt != null ? Timestamp.fromDate(joinedAt!) : null,
+      'isVerified': isVerified,
     };
   }
 
@@ -49,6 +53,7 @@ class UserModel {
     String? profileImageUrl,
     String? phoneNumber,
     DateTime? joinedAt,
+    bool? isVerified, // Added isVerified field
   }) {
     return UserModel(
       uid: uid ?? this.uid,
@@ -57,12 +62,13 @@ class UserModel {
       profileImageUrl: profileImageUrl ?? this.profileImageUrl,
       phoneNumber: phoneNumber ?? this.phoneNumber,
       joinedAt: joinedAt ?? this.joinedAt,
+      isVerified: isVerified ?? this.isVerified,
     );
   }
 
   @override
   String toString() {
-    return 'UserModel{uid: $uid, name: $name, about: $about, profileImageUrl: $profileImageUrl, phoneNumber: $phoneNumber, joinedAt: $joinedAt}';
+    return 'UserModel{uid: $uid, name: $name, about: $about, profileImageUrl: $profileImageUrl, phoneNumber: $phoneNumber, joinedAt: $joinedAt, isVerified: $isVerified}'; // Added isVerified to toString
   }
 
   @override
@@ -75,7 +81,8 @@ class UserModel {
           about == other.about &&
           profileImageUrl == other.profileImageUrl &&
           phoneNumber == other.phoneNumber &&
-          joinedAt == other.joinedAt;
+          joinedAt == other.joinedAt &&
+          isVerified == other.isVerified;
 
   @override
   int get hashCode =>
@@ -84,5 +91,6 @@ class UserModel {
       about.hashCode ^
       profileImageUrl.hashCode ^
       phoneNumber.hashCode ^
-      joinedAt.hashCode;
+      joinedAt.hashCode ^
+      isVerified.hashCode;
 }

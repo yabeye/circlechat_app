@@ -1,3 +1,4 @@
+import 'package:circlechat_app/presentation/cubit/chat/chat_list_cubit.dart';
 import 'package:circlechat_app/presentation/cubit/presence/presence_cubit.dart';
 import 'package:circlechat_app/presentation/cubit/splash/splash_cubit.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +34,9 @@ class CirlceChatApp extends StatelessWidget {
         ),
         BlocProvider<PresenceCubit>(
           create: (context) => getIt(),
+        ),
+        BlocProvider<ChatListCubit>(
+          create: (context) => getIt()..loadChats(),
         ),
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(

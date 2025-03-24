@@ -1,5 +1,6 @@
 import 'package:circlechat_app/core/navigation/app_router.dart';
 import 'package:circlechat_app/presentation/cubit/auth/auth_cubit.dart';
+import 'package:circlechat_app/presentation/cubit/chat/chat_list_cubit.dart';
 import 'package:circlechat_app/presentation/cubit/presence/presence_cubit.dart';
 import 'package:circlechat_app/services/logging_service.dart';
 import 'package:circlechat_app/services/navigation_service.dart';
@@ -19,5 +20,6 @@ Future<void> setupLocator() async {
     ..registerLazySingleton(() => NavigationService(AppRouter.router))
     ..registerSingleton<FirebaseService>(FirebaseService())
     ..registerSingleton<AuthCubit>(AuthCubit(FirebaseService()))
-    ..registerSingleton<PresenceCubit>(PresenceCubit());
+    ..registerSingleton<PresenceCubit>(PresenceCubit())
+    ..registerSingleton<ChatListCubit>(ChatListCubit());
 }

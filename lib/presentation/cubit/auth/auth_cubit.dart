@@ -1,4 +1,5 @@
 import 'package:circlechat_app/core/errors.dart';
+import 'package:circlechat_app/data/models/user_model.dart';
 import 'package:circlechat_app/services/logging_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';

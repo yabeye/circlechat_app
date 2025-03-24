@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:circlechat_app/data/models/chat_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -163,6 +164,58 @@ class FirebaseService {
 
   Stream<DatabaseEvent> getUserPresenceStream(String userId) {
     return _database.child('presence/$userId').onValue;
+  }
+
+  // Chats
+  Future<List<MessageModel>> getMessages(String chatId) async {
+    final snapshot = await _firestore
+        .collection('chats')
+        .doc(chatId)
+        .collection('messages')
+        .orderBy('timestamp', descending: true)
+        .get();
+    return snapshot.docs
+        .map((doc) => MessageModel.fromJson(doc.data()))
+        .toList();
+  }
+
+  Stream<List<MessageModel>> getMessagesStream(String chatId) {
+    return _firestore
+        .collection('chats')
+        .doc(chatId)
+        .collection('messages')
+        .orderBy('timestamp', descending: true)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => MessageModel.fromJson(doc.data()))
+            .toList());
+  }
+
+  Future<void> sendMessage(String chatId, MessageModel message) async {
+    await _firestore
+        .collection('chats')
+        .doc(chatId)
+        .collection('messages')
+        .add(message.toJson());
+
+    // Update last message in chat document
+    await _firestore.collection('chats').doc(chatId).update({
+      'lastMessageText': message.text,
+      'lastMessageTimestamp': message.timestamp,
+      'lastMessageSenderId': message.senderId,
+    });
+  }
+
+  Stream<List<ChatModel>> getChatsStream(String userId) {
+    print('get chats stream ${userId}');
+    return _firestore
+        .collection('chats')
+        .where('participants', arrayContains: userId)
+        .orderBy('lastMessageTimestamp', descending: true)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => ChatModel.fromJson(doc.data()))
+            .toList());
   }
 
   // Storage

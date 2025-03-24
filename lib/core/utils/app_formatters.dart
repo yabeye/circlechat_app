@@ -21,4 +21,23 @@ abstract class AppFormatters {
       return digitsOnly;
     }
   }
+
+  static String formatChatDateTime(DateTime dateTime) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final yesterday = today.subtract(Duration(days: 1));
+    final dateToFormat = DateTime(dateTime.year, dateTime.month, dateTime.day);
+
+    if (dateToFormat == today) {
+      final hours = dateTime.hour;
+      final minutes = dateTime.minute.toString().padLeft(2, '0');
+      final period = hours >= 12 ? 'pm' : 'am';
+      final formattedHours = hours % 12 == 0 ? 12 : hours % 12;
+      return '$formattedHours:$minutes $period';
+    } else if (dateToFormat == yesterday) {
+      return 'Yesterday';
+    } else {
+      return '${dateTime.day.toString().padLeft(2, '0')}/${dateTime.month.toString().padLeft(2, '0')}/${dateTime.year}';
+    }
+  }
 }
