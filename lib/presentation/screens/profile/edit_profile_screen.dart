@@ -10,6 +10,7 @@ import 'package:circlechat_app/presentation/cubit/auth/auth_cubit.dart';
 import 'package:circlechat_app/presentation/cubit/profile/profile_cubit.dart';
 import 'package:circlechat_app/presentation/widgets/app_widgets/app_buttons.dart';
 import 'package:circlechat_app/presentation/widgets/app_widgets/app_listtile.dart';
+import 'package:circlechat_app/presentation/widgets/app_widgets/app_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:circlechat_app/core/theme/app_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -50,7 +51,7 @@ class EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       appBar: AppBar(
         title: const Text('Profile'),
         titleSpacing: AppSizes.globalPadding,

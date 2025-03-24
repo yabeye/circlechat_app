@@ -2,6 +2,7 @@ import 'package:circlechat_app/core/constants/app_sizes.dart';
 import 'package:circlechat_app/core/locator.dart';
 import 'package:circlechat_app/presentation/cubit/profile/profile_cubit.dart';
 import 'package:circlechat_app/presentation/widgets/app_widgets/app_listtile.dart';
+import 'package:circlechat_app/presentation/widgets/app_widgets/app_scaffold.dart';
 import 'package:circlechat_app/presentation/widgets/profile_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,7 +12,7 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       appBar: AppBar(
         title: const Text('Settings'),
       ),
@@ -19,7 +20,6 @@ class SettingsScreen extends StatelessWidget {
         create: (context) => ProfileCubit(getIt()),
         child: ListView(
           children: <Widget>[
-            const Divider(),
             buildProfileTile(context),
             const Divider(),
             AppListTile(

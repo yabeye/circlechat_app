@@ -6,6 +6,7 @@ import 'package:circlechat_app/data/models/status_model.dart';
 import 'package:circlechat_app/presentation/cubit/auth/auth_cubit.dart';
 import 'package:circlechat_app/presentation/widgets/app_widgets/app_buttons.dart';
 import 'package:circlechat_app/presentation/widgets/app_widgets/app_listtile.dart';
+import 'package:circlechat_app/presentation/widgets/app_widgets/app_scaffold.dart';
 import 'package:circlechat_app/presentation/widgets/profile_avatar.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,7 @@ class UpdatesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       appBar: AppBar(
         titleSpacing: AppSizes.globalPadding,
         title: const Text('Updates'),
@@ -32,7 +33,7 @@ class UpdatesScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(
-            vertical: AppSizes.bodyVerticalPadding,
+            vertical: AppSizes.globalPaddingHalf,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,7 +63,11 @@ class UpdatesScreen extends StatelessWidget {
                 subtitle: 'Tap to add status update',
               ),
               const Divider(),
-              AppSizes.verticalPaddingMid,
+              const Padding(
+                padding: EdgeInsets.only(
+                  top: AppSizes.globalPaddingHalf,
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: AppSizes.globalPadding,

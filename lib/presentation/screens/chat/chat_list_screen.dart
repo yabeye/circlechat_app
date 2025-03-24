@@ -7,6 +7,7 @@ import 'package:circlechat_app/presentation/cubit/auth/auth_cubit.dart';
 import 'package:circlechat_app/presentation/cubit/chat/chat_cubit.dart';
 import 'package:circlechat_app/presentation/screens/chat/chat_app_bar.dart';
 import 'package:circlechat_app/presentation/screens/chat/chat_list_tile.dart';
+import 'package:circlechat_app/presentation/widgets/app_widgets/app_scaffold.dart';
 import 'package:circlechat_app/services/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -66,7 +67,7 @@ class ChatListScreenState extends State<ChatListScreen> {
             }
           });
 
-          return Scaffold(
+          return AppScaffold(
             appBar: isSelecting
                 ? const ChatSelectingAppBar()
                 : const ChatMainAppBar(),

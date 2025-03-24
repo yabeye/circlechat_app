@@ -1,15 +1,16 @@
+import 'package:flutter/material.dart';
 import 'package:circlechat_app/core/constants/app_sizes.dart';
 import 'package:circlechat_app/presentation/widgets/app_widgets/app_buttons.dart';
 import 'package:circlechat_app/presentation/widgets/app_widgets/app_image.dart';
+import 'package:circlechat_app/presentation/widgets/app_widgets/app_scaffold.dart';
 import 'package:circlechat_app/presentation/widgets/external_link_text.dart';
-import 'package:flutter/material.dart';
 
 class CommunitiesScreen extends StatelessWidget {
   const CommunitiesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       appBar: AppBar(
         title: const Text('Communities'),
         titleSpacing: AppSizes.globalPadding,
