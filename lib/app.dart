@@ -57,7 +57,7 @@ class CirlceChatApp extends StatelessWidget {
             return MaterialApp.router(
               title: 'CircleChat',
               debugShowCheckedModeBanner: false,
-              theme: themeData,
+              theme: lightTheme ?? themeData,
               routerConfig: AppRouter.router,
             );
           });

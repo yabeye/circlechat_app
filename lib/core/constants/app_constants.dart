@@ -23,6 +23,10 @@ abstract class AppConstants {
       'Never miss a moment with your loved ones.';
   static const String walkthroughTitle4 = 'Done';
   static const String walkthroughDescription4 = '';
+
+  static const String inviteContactMessage =
+      'Hey, I am using CircleChat. Join me and let\'s connect.'
+      ' Get it at https://circlechat.com/dl/code=MMXBssBrJ8';
 }
 
 class LocalStorageKeys {

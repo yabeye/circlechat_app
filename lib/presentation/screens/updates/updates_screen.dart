@@ -1,7 +1,9 @@
 import 'package:circlechat_app/core/constants/app_sizes.dart';
 import 'package:circlechat_app/core/constants/asset_files.dart';
+import 'package:circlechat_app/core/locator.dart';
 import 'package:circlechat_app/core/theme/app_colors.dart';
 import 'package:circlechat_app/data/models/status_model.dart';
+import 'package:circlechat_app/presentation/cubit/auth/auth_cubit.dart';
 import 'package:circlechat_app/presentation/widgets/app_widgets/app_buttons.dart';
 import 'package:circlechat_app/presentation/widgets/app_widgets/app_listtile.dart';
 import 'package:circlechat_app/presentation/widgets/profile_avatar.dart';
@@ -46,7 +48,7 @@ class UpdatesScreen extends StatelessWidget {
               ),
               AppListTile(
                 leading: ProfileAvatar(
-                  profileId: 'my-dummy-uid',
+                  profileId: getIt.get<AuthCubit>().userId ?? '',
                   imageUrl: KImages.currentUserDummy,
                   status: StatusModel(
                     id: 'temporary-status-id',
@@ -54,6 +56,7 @@ class UpdatesScreen extends StatelessWidget {
                     userId: 'my-dummy-uid',
                     imageUrl: KImages.currentUserDummyStatus,
                   ),
+                  showAddStory: true,
                 ),
                 title: 'My status',
                 subtitle: 'Tap to add status update',

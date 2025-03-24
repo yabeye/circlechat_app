@@ -35,12 +35,14 @@ class AppListTile extends StatelessWidget {
           ? Text(
               title ?? '',
               style: titleStyle ?? tileTheme.titleTextStyle,
+              maxLines: 1,
             )
           : null,
       subtitle: subtitle != null
           ? Text(
               subtitle ?? '',
               style: subtitleStyle ?? tileTheme.subtitleTextStyle,
+              maxLines: 2,
             )
           : null,
       onTap: onTap,
@@ -48,6 +50,7 @@ class AppListTile extends StatelessWidget {
       contentPadding: contentPadding,
       horizontalTitleGap: horizontalTitleGap,
       minVerticalPadding: verticalSpacing,
+      shape: const RoundedRectangleBorder(),
     );
   }
 }

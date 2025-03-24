@@ -19,6 +19,7 @@ class ProfileAvatar extends StatelessWidget {
     this.height,
     this.status,
     this.showOnline = true,
+    this.showAddStory = false,
   });
 
   final String profileId;
@@ -29,6 +30,7 @@ class ProfileAvatar extends StatelessWidget {
   final double? height;
   final StatusModel? status;
   final bool showOnline;
+  final bool showAddStory;
 
   @override
   Widget build(BuildContext context) {
@@ -77,16 +79,12 @@ class ProfileAvatar extends StatelessWidget {
               ),
             ),
             // online show
-            if (showOnline && !isMyProfile)
+            if (showOnline)
               BlocProvider<PresenceCubit>(
-                create: (context) => PresenceCubit(),
+                create: (context) =>
+                    PresenceCubit()..startPresenceListener(profileId),
                 child: BlocBuilder<PresenceCubit, PresenceState>(
                   builder: (context, state) {
-                    if (state is PresenceInitial) {
-                      context
-                          .read<PresenceCubit>()
-                          .startPresenceListener(profileId);
-                    }
                     if (state is PresenceUpdated) {
                       if (state.isOnline) {
                         return Positioned(
@@ -114,7 +112,7 @@ class ProfileAvatar extends StatelessWidget {
                   },
                 ),
               ),
-            if (isMyProfile)
+            if (isMyProfile && showAddStory)
               Positioned(
                 right: 0,
                 bottom: 0,
