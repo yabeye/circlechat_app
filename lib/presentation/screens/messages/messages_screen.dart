@@ -1,3 +1,5 @@
+import 'package:circlechat_app/presentation/cubit/auth/auth_cubit.dart';
+import 'package:circlechat_app/presentation/cubit/chat/chat_list_cubit.dart';
 import 'package:circlechat_app/presentation/screens/messages/message_card.dart';
 import 'package:circlechat_app/presentation/widgets/app_widgets/app_listtile.dart';
 import 'package:circlechat_app/presentation/widgets/app_widgets/app_scaffold.dart';
@@ -12,21 +14,57 @@ import 'package:circlechat_app/presentation/cubit/messages/messages_cubit.dart';
 import 'package:circlechat_app/data/models/chat_model.dart';
 
 class MessagesScreen extends StatelessWidget {
-  const MessagesScreen({super.key, required this.chat});
-  final ChatModel chat;
+  const MessagesScreen({
+    required this.chatId,
+    super.key,
+  });
+  final String chatId;
 
   @override
   Widget build(BuildContext context) {
+    final chatCubit = context.read<ChatListCubit>();
+    ChatModel? chat;
+
+    if (chatCubit.state is ChatListLoaded) {
+      chat = (chatCubit.state as ChatListLoaded)
+          .chats
+          .firstWhere((e) => e.id != chatId);
+    }
+
+    if (chat == null) {
+      // return a chat not found screen //
+      return const Scaffold();
+    }
+
     return BlocProvider(
-      create: (context) => MessagesCubit()..loadMessages(chat),
+      create: (context) => MessagesCubit()..loadMessages(chat!),
       child: AppScaffold(
+        backgroundImage:
+            'https://img.freepik.com/free-vector/lineart-birds-pattern_23-2147495660.jpg?t=st=1743115328~exp=1743118928~hmac=49b895caa2cf821125cae7e09dc608599e82d7ff96e50b62183c83d5c763775f&w=740',
         appBar: AppBar(
+          leadingWidth: 30,
           title: AppListTile(
+            contentPadding: EdgeInsets.zero,
+            horizontalTitleGap: 10,
             leading: ProfileAvatar(
               profileId: chat.participantUsers.first.uid,
             ),
             title: chat.participantUsers.first.name,
           ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.call_outlined),
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: const Icon(Icons.videocam_outlined),
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: const Icon(Icons.more_vert_outlined),
+              onPressed: () {},
+            ),
+          ],
         ),
         body: Column(
           children: [
@@ -42,7 +80,10 @@ class MessagesScreen extends StatelessWidget {
                       itemCount: reversedMessages.length,
                       itemBuilder: (context, index) {
                         final message = reversedMessages[index];
-                        return MessageCard(message: message);
+                        return MessageCard(
+                          chat: chat!,
+                          message: message,
+                        );
                       },
                     );
                   } else if (state is MessagesError) {

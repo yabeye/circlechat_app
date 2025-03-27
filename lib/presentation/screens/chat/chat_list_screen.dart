@@ -1,5 +1,6 @@
 import 'package:circlechat_app/core/locator.dart';
 import 'package:circlechat_app/core/navigation/app_router.dart';
+import 'package:circlechat_app/core/navigation/navigation_helper.dart';
 import 'package:circlechat_app/core/theme/app_colors.dart';
 import 'package:circlechat_app/data/models/chat_model.dart';
 import 'package:circlechat_app/presentation/cubit/chat/chat_cubit.dart';
@@ -10,6 +11,7 @@ import 'package:circlechat_app/presentation/widgets/app_widgets/app_scaffold.dar
 import 'package:circlechat_app/services/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class ChatListScreen extends StatefulWidget {
   const ChatListScreen({super.key});
@@ -61,7 +63,13 @@ class ChatListScreenState extends State<ChatListScreen> {
                                 .read<ChatCubit>()
                                 .toggleSelection(chatData[index].id ?? '');
                           } else {
-                            // TODO: Navigate to chat details screen
+                            NavigationHelper.navigateTo(
+                              context,
+                              '${AppRouter.chat}/${chatData[index].id ?? ''}',
+                              // params: {
+                              //   'chatId': chatData[index].id ?? '',
+                              // },
+                            );
                           }
                         },
                       );

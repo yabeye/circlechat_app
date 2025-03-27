@@ -1,3 +1,3 @@
 enum ChatType { private, group, community }
 
-enum MessageType { text, image, video, file }
+enum MessageType { text, emoji, image, video, file }

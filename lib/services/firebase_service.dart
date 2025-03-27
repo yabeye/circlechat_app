@@ -213,7 +213,7 @@ class FirebaseService {
         .orderBy('lastMessageTimestamp', descending: true)
         .snapshots()
         .map((snapshot) => snapshot.docs
-            .map((doc) => ChatModel.fromJson(doc.data()))
+            .map((doc) => ChatModel.fromJson(doc.data(), id: doc.id))
             .toList());
   }
 

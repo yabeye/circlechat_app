@@ -54,7 +54,7 @@ ThemeData lightTheme = ThemeData(
         color: AppColors.textLight,
       ),
       bodyMedium: const TextStyle(
-        fontSize: 15,
+        fontSize: 12,
         color: AppColors.textLight,
         fontWeight: FontWeight.normal,
       ),

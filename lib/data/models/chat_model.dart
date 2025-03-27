@@ -23,7 +23,10 @@ class ChatModel {
       participants: List<String>.from(json['participants'] ?? []),
       participantUsers: json['participantUsers'] != null
           ? (json['participantUsers'] as List<dynamic>)
-              .map((item) => UserModel.fromJson(item as Map<String, dynamic>))
+              .map((item) => UserModel.fromJson(
+                    item as Map<String, dynamic>,
+                    id: item['uid'],
+                  ))
               .toList()
           : [],
       lastMessageTimestamp: json['lastMessageTimestamp'] is Timestamp

@@ -2,6 +2,7 @@ import 'package:circlechat_app/presentation/screens/auth/otp_screen.dart';
 import 'package:circlechat_app/presentation/screens/auth/phone_auth_screen.dart';
 import 'package:circlechat_app/presentation/screens/chat/new_chat_screen.dart';
 import 'package:circlechat_app/presentation/screens/home/home_screen.dart';
+import 'package:circlechat_app/presentation/screens/messages/messages_screen.dart';
 import 'package:circlechat_app/presentation/screens/profile/edit_profile_screen.dart';
 import 'package:circlechat_app/presentation/screens/settings/settings_screen.dart';
 import 'package:circlechat_app/presentation/screens/walkthrough/walkthrough_screen.dart';
@@ -15,7 +16,7 @@ class AppRouter {
   static const String otpAuth = '/otp-auth';
   static const String editProfile = '/edit-profile';
   static const String home = '/';
-  static const String chat = '/chat/:chatId';
+  static const String chat = '/chat';
   static const String newChat = '/new-chat';
   static const String settings = '/settings';
 
@@ -54,17 +55,13 @@ class AppRouter {
         path: settings,
         builder: (context, state) => const SettingsScreen(),
       ),
-      // GoRoute(
-      //   path: chatList,
-      //   builder: (context, state) => ChatListScreen(),
-      // ),
-      // GoRoute(
-      //   path: chat,
-      //   builder: (context, state) {
-      //     final chatId = state.params['chatId']!;
-      //     return ChatScreen(chatId: chatId);
-      //   },
-      // ),
+      GoRoute(
+        path: '$chat/:chatId',
+        builder: (context, state) {
+          final chatId = state.pathParameters['chatId'];
+          return MessagesScreen(chatId: chatId ?? '');
+        },
+      ),
 
       // Add other routes here
     ],
