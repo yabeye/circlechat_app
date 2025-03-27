@@ -72,28 +72,36 @@ class ChatModel {
 
 class MessageModel {
   MessageModel({
-    required this.id,
-    required this.senderId,
-    required this.text,
-    required this.timestamp,
-    required this.type,
+    this.id,
+    this.senderId,
+    this.text,
+    this.timestamp,
+    this.type,
+    this.file,
+    this.isSeen = false,
   });
 
-  factory MessageModel.fromJson(Map<String, dynamic> json) {
+  factory MessageModel.fromJson(Map<String, dynamic> json, {String? id}) {
     return MessageModel(
-      id: json['id'] as String,
-      senderId: json['senderId'] as String,
-      text: json['text'] as String,
-      timestamp: json['timestamp'] as Timestamp,
+      id: json['id'] as String? ?? id,
+      senderId: json['senderId'] as String?,
+      text: json['text'] as String?,
+      timestamp: json['timestamp'] as Timestamp?,
       type: MessageType.values.byName(json['type']),
+      file: json['file'] != null
+          ? MessageFileModel.fromJson(json['file'] as Map<String, dynamic>)
+          : null,
+      isSeen: json['isSeen'] as bool? ?? false,
     );
   }
 
-  final String id;
-  final String senderId;
-  final String text;
-  final Timestamp timestamp;
-  final MessageType type;
+  final String? id;
+  final String? senderId;
+  final String? text;
+  final Timestamp? timestamp;
+  final MessageType? type;
+  final MessageFileModel? file;
+  final bool? isSeen;
 
   Map<String, dynamic> toJson() {
     return {
@@ -101,7 +109,53 @@ class MessageModel {
       'senderId': senderId,
       'text': text,
       'timestamp': timestamp,
-      'type': type.name,
+      'type': type?.name,
+      'file': file,
+      'isSeen': isSeen,
+    };
+  }
+}
+
+class MessageFileModel {
+  MessageFileModel({
+    this.id,
+    this.fileName,
+    this.fileUrl,
+    this.coverImage,
+    this.timestamp,
+    this.size,
+    this.duration,
+  });
+
+  factory MessageFileModel.fromJson(Map<String, dynamic> json, {String? id}) {
+    return MessageFileModel(
+      id: json['id'] as String? ?? id,
+      fileName: json['fileName'] as String?,
+      fileUrl: json['fileUrl'] as String?,
+      coverImage: json['coverImage'] as String?,
+      timestamp: json['timestamp'] as Timestamp?,
+      size: json['size'] as int?,
+      duration: json['duration'] as int?,
+    );
+  }
+
+  final String? id;
+  final String? fileName;
+  final String? fileUrl;
+  final String? coverImage;
+  final Timestamp? timestamp;
+  final int? size;
+  final int? duration;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'fileName': fileName,
+      'fileUrl': fileUrl,
+      'coverImage': coverImage,
+      'timestamp': timestamp,
+      'size': size,
+      'duration': duration,
     };
   }
 }

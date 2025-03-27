@@ -207,7 +207,6 @@ class FirebaseService {
   }
 
   Stream<List<ChatModel>> getChatsStream(String userId) {
-    print('get chats stream ${userId}');
     return _firestore
         .collection('chats')
         .where('participants', arrayContains: userId)

@@ -1,3 +1,6 @@
+import 'package:circlechat_app/data/models/chat_model.dart';
+import 'package:circlechat_app/data/models/user_model.dart';
+import 'package:circlechat_app/presentation/screens/messages/messages_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:circlechat_app/presentation/cubit/presence/presence_cubit.dart';
@@ -56,6 +59,18 @@ class HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return MessagesScreen(
+      chat: ChatModel(
+        id: 'xMD0Vjpn3Av2aHQS3Tqb',
+        participantUsers: [
+          UserModel(
+            uid: 'rcNzgFPfQceulfL06IkIuI2Qem03',
+            name: 'FruitDestroyer33',
+          ),
+          UserModel(uid: 'uid', name: 'name'),
+        ],
+      ),
+    );
     return Scaffold(
       body: PageView(
         controller: _pageController,

@@ -3,6 +3,7 @@ import 'package:circlechat_app/core/theme/app_colors.dart';
 import 'package:circlechat_app/core/utils/app_formatters.dart';
 import 'package:circlechat_app/data/models/chat_model.dart';
 import 'package:circlechat_app/presentation/cubit/auth/auth_cubit.dart';
+import 'package:circlechat_app/presentation/widgets/message_seen_indicator.dart';
 import 'package:circlechat_app/presentation/widgets/profile_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -105,20 +106,7 @@ class ChatListTileState extends State<ChatListTile> {
             BlocBuilder<AuthCubit, AuthState>(
               builder: (context, state) {
                 if (widget.chatModel.lastMessageSenderId == myId) {
-                  return SizedBox(
-                    width: 30,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const SizedBox(width: 4),
-                        Icon(
-                          isSeen ? Icons.done_all : Icons.done,
-                          size: 22,
-                          color: isSeen ? AppColors.seenIndicator : Colors.grey,
-                        ),
-                      ],
-                    ),
-                  );
+                  return MessageSeenIndicator(isSeen: isSeen);
                 }
 
                 return const SizedBox.shrink();

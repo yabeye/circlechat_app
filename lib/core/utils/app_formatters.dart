@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 abstract class AppFormatters {
   static String formatPhoneNumber(String phoneNumber) {
     if (phoneNumber.isEmpty) {
@@ -22,10 +24,15 @@ abstract class AppFormatters {
     }
   }
 
+  static String formatTimeAmPm(DateTime dateTime) {
+    final formatter = DateFormat('hh:mm a').format(dateTime).toLowerCase();
+    return formatter;
+  }
+
   static String formatChatDateTime(DateTime dateTime) {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
-    final yesterday = today.subtract(Duration(days: 1));
+    final yesterday = today.subtract(const Duration(days: 1));
     final dateToFormat = DateTime(dateTime.year, dateTime.month, dateTime.day);
 
     if (dateToFormat == today) {
