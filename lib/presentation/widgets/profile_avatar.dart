@@ -72,10 +72,18 @@ class ProfileAvatar extends StatelessWidget {
                         width: width,
                         height: height,
                         imageUrl: imageUrl ?? '',
+                        placeholder: (_, __) => SizedBox(
+                          width: width,
+                          height: height,
+                          child: _defaultProfile(),
+                        ),
+                        errorWidget: (_, __, ___) => SizedBox(
+                          width: width,
+                          height: height,
+                          child: _defaultProfile(),
+                        ),
                       )
-                    : isGroup
-                        ? KIcons.defaultGroupProfilePic()
-                        : KIcons.defaultProfilePic(),
+                    : _defaultProfile(),
               ),
             ),
             // online show
@@ -141,5 +149,11 @@ class ProfileAvatar extends StatelessWidget {
         );
       },
     );
+  }
+
+  _defaultProfile() {
+    return isGroup
+        ? KIcons.defaultGroupProfilePic()
+        : KIcons.defaultProfilePic();
   }
 }

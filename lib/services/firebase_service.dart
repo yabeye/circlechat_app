@@ -184,7 +184,7 @@ class FirebaseService {
         .collection('chats')
         .doc(chatId)
         .collection('messages')
-        .orderBy('timestamp', descending: true)
+        .orderBy('timestamp', descending: false)
         .snapshots()
         .map((snapshot) => snapshot.docs
             .map((doc) => MessageModel.fromJson(doc.data()))

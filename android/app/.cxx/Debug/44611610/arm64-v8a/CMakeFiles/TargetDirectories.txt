@@ -1,0 +1,2 @@
+/home/yeabsera/workspace/personal_projects/circlechat_app/android/app/.cxx/Debug/44611610/arm64-v8a/CMakeFiles/edit_cache.dir
+/home/yeabsera/workspace/personal_projects/circlechat_app/android/app/.cxx/Debug/44611610/arm64-v8a/CMakeFiles/rebuild_cache.dir

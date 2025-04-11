@@ -1,14 +1,10 @@
-import 'package:circlechat_app/presentation/cubit/auth/auth_cubit.dart';
 import 'package:circlechat_app/presentation/cubit/chat/chat_list_cubit.dart';
 import 'package:circlechat_app/presentation/screens/messages/message_card.dart';
-import 'package:circlechat_app/presentation/widgets/app_widgets/app_listtile.dart';
+import 'package:circlechat_app/presentation/widgets/app_widgets/app_list_tile.dart';
 import 'package:circlechat_app/presentation/widgets/app_widgets/app_scaffold.dart';
 import 'package:circlechat_app/presentation/widgets/profile_avatar.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:circlechat_app/presentation/cubit/messages/messages_cubit.dart';
 import 'package:circlechat_app/data/models/chat_model.dart';
@@ -74,12 +70,11 @@ class MessagesScreen extends StatelessWidget {
                   if (state is MessagesLoading) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (state is MessagesLoaded) {
-                    // Reverse the list of messages
-                    final reversedMessages = state.messages.reversed.toList();
+                    final messages = state.messages.toList();
                     return ListView.builder(
-                      itemCount: reversedMessages.length,
+                      itemCount: messages.length,
                       itemBuilder: (context, index) {
-                        final message = reversedMessages[index];
+                        final message = messages[index];
                         return MessageCard(
                           chat: chat!,
                           message: message,

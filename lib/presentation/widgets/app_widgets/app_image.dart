@@ -151,6 +151,8 @@ class AppCachedNetworkImage extends StatelessWidget {
     this.height,
     this.borderRadius,
     this.fit = BoxFit.cover,
+    this.placeholder,
+    this.errorWidget,
   });
 
   final String imageUrl;
@@ -158,6 +160,8 @@ class AppCachedNetworkImage extends StatelessWidget {
   final double? height;
   final BorderRadius? borderRadius;
   final BoxFit fit;
+  final Widget Function(BuildContext, String)? placeholder;
+  final Widget Function(BuildContext, String, Object)? errorWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -168,9 +172,11 @@ class AppCachedNetworkImage extends StatelessWidget {
         width: width,
         height: height,
         fit: fit,
-        errorWidget: (context, url, error) {
-          return const Icon(Icons.error);
-        },
+        placeholder: placeholder,
+        errorWidget: errorWidget ??
+            (context, url, error) {
+              return const Icon(Icons.error);
+            },
       ),
     );
   }

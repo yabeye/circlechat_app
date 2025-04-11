@@ -2,6 +2,7 @@ import 'package:circlechat_app/core/enums/chat_enums.dart';
 import 'package:circlechat_app/core/theme/app_colors.dart';
 import 'package:circlechat_app/core/utils/app_converter.dart';
 import 'package:circlechat_app/core/utils/app_formatters.dart';
+import 'package:circlechat_app/core/utils/http_utils.dart';
 import 'package:circlechat_app/data/models/chat_model.dart';
 import 'package:circlechat_app/data/models/user_model.dart';
 import 'package:circlechat_app/presentation/cubit/auth/auth_cubit.dart';
@@ -11,6 +12,8 @@ import 'package:circlechat_app/presentation/widgets/profile_avatar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_link_previewer/flutter_link_previewer.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' show PreviewData;
 
 class MessageCard extends StatelessWidget {
   const MessageCard({
@@ -71,11 +74,8 @@ class MessageCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   if (message.file != null) MessageFile(message: message),
-                  Text(
-                    message.text ?? '',
-                    style: textTheme.bodyMedium!.copyWith(
-                      fontSize: message.type == MessageType.emoji ? 32 : null,
-                    ),
+                  MessageText(
+                    message: message,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -100,6 +100,52 @@ class MessageCard extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class MessageText extends StatefulWidget {
+  const MessageText({
+    required this.message,
+    super.key,
+  });
+  final MessageModel message;
+
+  @override
+  State<MessageText> createState() => _MessageTextState();
+}
+
+class _MessageTextState extends State<MessageText> {
+  PreviewData? _previewData;
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    final message = widget.message;
+
+    if (HttpUtils.containsValidUrl(message.text ?? '')) {
+      return LinkPreview(
+        enableAnimation: true,
+        onPreviewDataFetched: (data) {
+          setState(() {
+            _previewData = data;
+          });
+        },
+        previewData: _previewData,
+        text: message.text ?? '',
+        textStyle: textTheme.bodyMedium!.copyWith(
+          fontSize: message.type == MessageType.emoji ? 32 : null,
+        ),
+        padding: EdgeInsets.zero,
+        width: MediaQuery.of(context).size.width,
+      );
+    }
+
+    return Text(
+      message.text ?? '',
+      style: textTheme.bodyMedium!.copyWith(
+        fontSize: message.type == MessageType.emoji ? 32 : null,
+      ),
     );
   }
 }

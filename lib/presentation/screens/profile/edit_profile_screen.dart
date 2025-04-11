@@ -9,7 +9,7 @@ import 'package:circlechat_app/core/utils/ui_helpers.dart';
 import 'package:circlechat_app/presentation/cubit/auth/auth_cubit.dart';
 import 'package:circlechat_app/presentation/cubit/profile/profile_cubit.dart';
 import 'package:circlechat_app/presentation/widgets/app_widgets/app_buttons.dart';
-import 'package:circlechat_app/presentation/widgets/app_widgets/app_listtile.dart';
+import 'package:circlechat_app/presentation/widgets/app_widgets/app_list_tile.dart';
 import 'package:circlechat_app/presentation/widgets/app_widgets/app_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:circlechat_app/core/theme/app_colors.dart';

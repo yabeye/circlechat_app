@@ -5,7 +5,7 @@ import 'package:circlechat_app/core/theme/app_colors.dart';
 import 'package:circlechat_app/data/models/status_model.dart';
 import 'package:circlechat_app/presentation/cubit/auth/auth_cubit.dart';
 import 'package:circlechat_app/presentation/widgets/app_widgets/app_buttons.dart';
-import 'package:circlechat_app/presentation/widgets/app_widgets/app_listtile.dart';
+import 'package:circlechat_app/presentation/widgets/app_widgets/app_list_tile.dart';
 import 'package:circlechat_app/presentation/widgets/app_widgets/app_scaffold.dart';
 import 'package:circlechat_app/presentation/widgets/profile_avatar.dart';
 import 'package:flutter/material.dart';
