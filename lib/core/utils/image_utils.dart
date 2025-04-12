@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'dart:ui' as ui;
 
 class ImageUtils {
   static final ImagePicker _picker = ImagePicker();
@@ -52,5 +53,12 @@ class ImageUtils {
       requestFullMetadata: requestFullMetadata,
     );
     return pickedFiles.map((e) => File(e.path)).toList();
+  }
+
+  static Future<ui.Image> getImageDimensions(File file) async {
+    final bytes = await file.readAsBytes();
+    final codec = await ui.instantiateImageCodec(bytes);
+    final frame = await codec.getNextFrame();
+    return frame.image;
   }
 }

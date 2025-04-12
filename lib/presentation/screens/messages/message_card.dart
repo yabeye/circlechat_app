@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:circlechat_app/core/enums/chat_enums.dart';
 import 'package:circlechat_app/core/theme/app_colors.dart';
 import 'package:circlechat_app/core/utils/app_converter.dart';
 import 'package:circlechat_app/core/utils/app_formatters.dart';
 import 'package:circlechat_app/core/utils/http_utils.dart';
+import 'package:circlechat_app/core/utils/image_utils.dart';
+import 'package:circlechat_app/core/utils/size_utils.dart';
 import 'package:circlechat_app/data/models/chat_model.dart';
 import 'package:circlechat_app/presentation/cubit/auth/auth_cubit.dart';
 import 'package:circlechat_app/presentation/widgets/app_widgets/app_image.dart';
@@ -13,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_link_previewer/flutter_link_previewer.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' show PreviewData;
+import 'dart:ui' as ui;
 
 class MessageCard extends StatelessWidget {
   const MessageCard({
@@ -155,9 +160,43 @@ class MessageFile extends StatelessWidget {
   final MessageModel message;
 
   Widget _imagePreviewer(String imageUrl) {
-    return AppCachedNetworkImage(
-      imageUrl: imageUrl,
-      borderRadius: BorderRadius.circular(6),
+    final isNetworkImage = imageUrl.startsWith('https');
+
+    final imageAspectRatio =
+        (message.file?.width == null && message.file?.height == null)
+            ? 1
+            : ((message.file!.width ?? 1) / (message.file!.height ?? 1));
+    if (isNetworkImage) {
+      return AspectRatio(
+        aspectRatio: imageAspectRatio.toDouble(),
+        child: AppCachedNetworkImage(
+          imageUrl: imageUrl,
+          borderRadius: BorderRadius.circular(6),
+        ),
+      );
+    }
+    return FutureBuilder<ui.Image>(
+      future: ImageUtils.getImageDimensions(File(imageUrl)),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (snapshot.hasError || !snapshot.hasData) {
+          return const SizedBox.shrink();
+        } else {
+          final imageAspectRatio = snapshot.data!.width / snapshot.data!.height;
+          return AspectRatio(
+            aspectRatio: imageAspectRatio,
+            child: AppImage(
+              filePath: imageUrl,
+              borderRadius: BorderRadius.circular(6),
+              width: snapshot.data?.width.toDouble(),
+              fit: BoxFit.fitWidth,
+            ),
+          );
+        }
+      },
     );
   }
 
@@ -166,7 +205,12 @@ class MessageFile extends StatelessWidget {
 
     switch (message.type) {
       case MessageType.image:
-        return _imagePreviewer(message.file?.fileName ?? '');
+        return Stack(
+          children: [
+            _imagePreviewer(message.file?.fileUrl ?? ''),
+            _buildPending(),
+          ],
+        );
       case MessageType.video:
         return Stack(
           children: [
@@ -206,6 +250,7 @@ class MessageFile extends StatelessWidget {
                 ),
               ),
             ),
+            _buildPending(),
           ],
         );
       case MessageType.file:
@@ -267,5 +312,21 @@ class MessageFile extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 4.0),
       child: _getWidget(context),
     );
+  }
+
+  _buildPending() {
+    return (message.status?.summary == MessageStatus.sending)
+        ? const Positioned(
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: SizedBox(
+                child: CircularProgressIndicator(),
+              ),
+            ),
+          )
+        : const SizedBox.shrink();
   }
 }

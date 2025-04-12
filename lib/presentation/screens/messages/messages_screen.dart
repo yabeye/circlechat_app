@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:circlechat_app/core/enums/chat_enums.dart';
 import 'package:circlechat_app/presentation/cubit/auth/auth_cubit.dart';
 import 'package:circlechat_app/presentation/cubit/chat/chat_list_cubit.dart';
 import 'package:circlechat_app/presentation/cubit/messages/message_input_cubit.dart';
@@ -115,6 +118,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                   }
                 },
                 builder: (context, inputState) {
+                  final messageInputCubit = context.read<MessageInputCubit>();
                   List<MessageModel> pendingMessages = [];
                   if (inputState is MessageInputLoading) {
                     pendingMessages = inputState.pendingMessages;
@@ -134,6 +138,21 @@ class _MessagesScreenState extends State<MessagesScreen> {
                           itemCount: messages.length,
                           itemBuilder: (context, index) {
                             final message = messages[index];
+                            List<File> pendingFiles = [];
+
+                            if (inputState.pendingFiles
+                                .containsKey(message.id)) {
+                              pendingFiles =
+                                  inputState.pendingFiles[message.id] ?? [];
+                            }
+
+                            if (pendingFiles.isNotEmpty) {
+                              message.file = MessageFileModel(
+                                fileName:
+                                    pendingFiles.first.path.split('/').last,
+                                fileUrl: pendingFiles.first.path,
+                              );
+                            }
 
                             return MessageCard(
                               chat: chat!,

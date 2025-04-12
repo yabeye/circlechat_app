@@ -106,8 +106,8 @@ class MessageModel {
   final String? senderId;
   final String? text;
   final Timestamp? timestamp;
-  final MessageType? type;
-  final MessageFileModel? file;
+  MessageType? type;
+  MessageFileModel? file;
   final MessageStatusModel? status;
 
   Map<String, dynamic> toJson({bool nowTimestamp = false}) {
@@ -131,9 +131,10 @@ class MessageFileModel {
     this.fileName,
     this.fileUrl,
     this.coverImage,
-    this.timestamp,
     this.size,
     this.duration,
+    this.width,
+    this.height,
   });
 
   factory MessageFileModel.fromJson(Map<String, dynamic> json, {String? id}) {
@@ -142,9 +143,10 @@ class MessageFileModel {
       fileName: json['fileName'] as String?,
       fileUrl: json['fileUrl'] as String?,
       coverImage: json['coverImage'] as String?,
-      timestamp: json['timestamp'] as Timestamp?,
       size: json['size'] as int?,
       duration: json['duration'] as int?,
+      width: json['width'] as double?,
+      height: json['height'] as double?,
     );
   }
 
@@ -152,9 +154,10 @@ class MessageFileModel {
   final String? fileName;
   final String? fileUrl;
   final String? coverImage;
-  final Timestamp? timestamp;
   final int? size;
   final int? duration;
+  final double? width;
+  final double? height;
 
   Map<String, dynamic> toJson() {
     return {
@@ -162,9 +165,10 @@ class MessageFileModel {
       'fileName': fileName,
       'fileUrl': fileUrl,
       'coverImage': coverImage,
-      'timestamp': timestamp,
       'size': size,
       'duration': duration,
+      'width': width,
+      'height': height,
     };
   }
 }
