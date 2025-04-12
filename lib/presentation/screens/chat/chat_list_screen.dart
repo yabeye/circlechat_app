@@ -48,20 +48,20 @@ class ChatListScreenState extends State<ChatListScreen> {
                   return ListView.builder(
                     itemCount: chatData.length,
                     itemBuilder: (context, index) {
+                      final chat = chatData[index];
                       return ChatListTile(
-                        chatModel: chatData[index],
+                        chatModel: chat,
                         onSelectChanged: (isSelected) {
                           context
                               .read<ChatCubit>()
-                              .toggleSelection(chatData[index].id ?? '');
+                              .toggleSelection(chat.id ?? '');
                         },
-                        isSelected: chatState.selectedChatIds
-                            .contains(chatData[index].id),
+                        isSelected: chatState.selectedChatIds.contains(chat.id),
                         onTap: () {
                           if (isSelecting) {
                             context
                                 .read<ChatCubit>()
-                                .toggleSelection(chatData[index].id ?? '');
+                                .toggleSelection(chat.id ?? '');
                           } else {
                             NavigationHelper.navigateTo(
                               context,

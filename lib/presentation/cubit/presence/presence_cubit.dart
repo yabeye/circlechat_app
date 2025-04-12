@@ -42,6 +42,7 @@ class PresenceCubit extends Cubit<PresenceState> with WidgetsBindingObserver {
         if (data['isOnline'] == null || data['lastSeen'] == null) {
           return;
         }
+        print('ALL DATA ${data}');
         final isOnline = data['isOnline'] as bool? ?? false;
         final lastSeen =
             DateTime.fromMillisecondsSinceEpoch(data['lastSeen'] as int);

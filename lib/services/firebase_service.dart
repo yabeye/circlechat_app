@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:circlechat_app/core/enums/chat_enums.dart';
 import 'package:circlechat_app/data/models/chat_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -167,6 +168,57 @@ class FirebaseService {
   }
 
   // Chats
+
+  Future<void> updateChatSeen(
+    ChatModel chat,
+    MessageStatus updateToStatus,
+    String currentUserId,
+  ) async {
+    try {
+      Map<Object, Object?> map = {};
+
+      if (updateToStatus == MessageStatus.delivered) {
+        map['status.delivered.$currentUserId.timestamp'] =
+            FieldValue.serverTimestamp();
+      }
+
+      if (updateToStatus == MessageStatus.sent) {
+        map['status.seen.$currentUserId.timestamp'] =
+            FieldValue.serverTimestamp();
+      }
+
+      await _firestore.collection('chats').doc(chat.id).update(map);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> updateChatStatusToDelivered(List<String> chatIds) async {
+    try {
+      final currentUserId = getCurrentUser()?.uid ?? '-';
+      // Loop through chatIds and process them in batches of 500
+      for (var i = 0; i < chatIds.length; i++) {
+        final batch =
+            _firestore.batch(); // Create a new batch for each iteration
+        // Add up to 500 operations to the batch
+        for (var j = i; j < i + 500 && j < chatIds.length; j++) {
+          var chatId = chatIds[j];
+          var chatRef = _firestore.collection('chats').doc(chatId);
+          batch.update(chatRef, {
+            'status.delivered.$currentUserId.timestamp':
+                FieldValue.serverTimestamp(),
+          });
+        }
+        // Commit the batch
+        await batch.commit();
+        // Move the index forward by 500 (or the remaining items)
+        i += 499;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<List<MessageModel>> getMessages(String chatId) async {
     final snapshot = await _firestore
         .collection('chats')
@@ -191,19 +243,23 @@ class FirebaseService {
             .toList());
   }
 
-  Future<void> sendMessage(String chatId, MessageModel message) async {
-    await _firestore
-        .collection('chats')
-        .doc(chatId)
-        .collection('messages')
-        .add(message.toJson());
+  Future<void> sendMessage(String? chatId, MessageModel message) async {
+    try {
+      message.status = MessageStatus.sent;
+      await _firestore
+          .collection('chats')
+          .doc(chatId)
+          .collection('messages')
+          .add(message.toJson(nowTimestamp: true));
 
-    // Update last message in chat document
-    await _firestore.collection('chats').doc(chatId).update({
-      'lastMessageText': message.text,
-      'lastMessageTimestamp': message.timestamp,
-      'lastMessageSenderId': message.senderId,
-    });
+      await _firestore.collection('chats').doc(chatId).update({
+        'text': message.text,
+        'lastMessageTimestamp': FieldValue.serverTimestamp(),
+        'status.summary': MessageStatus.sent.name,
+      });
+    } catch (e) {
+      print('LETS Go ERROR ${e.toString()}');
+    }
   }
 
   Stream<List<ChatModel>> getChatsStream(String userId) {

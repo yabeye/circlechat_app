@@ -1,4 +1,5 @@
 import 'package:circlechat_app/core/constants/app_sizes.dart';
+import 'package:circlechat_app/core/enums/chat_enums.dart';
 import 'package:circlechat_app/core/theme/app_colors.dart';
 import 'package:circlechat_app/core/utils/app_formatters.dart';
 import 'package:circlechat_app/data/models/chat_model.dart';
@@ -31,13 +32,12 @@ class ChatListTileState extends State<ChatListTile> {
   @override
   Widget build(BuildContext context) {
     final isSelected = widget.isSelected;
-    final isSeen = widget.chatModel.isSeen;
 
-    final myId = context.read<AuthCubit>().userId;
+    final currentUserId = context.read<AuthCubit>().userId;
     // final myAccount =
     //     widget.chatModel.participantUsers.firstWhere((e) => e.uid == myId);
-    final otherUser =
-        widget.chatModel.participantUsers.firstWhere((e) => e.uid != myId);
+    final otherUser = widget.chatModel.participantUsers
+        .firstWhere((e) => e.uid != currentUserId);
 
     return GestureDetector(
       onLongPress: () {
@@ -105,8 +105,11 @@ class ChatListTileState extends State<ChatListTile> {
           children: [
             BlocBuilder<AuthCubit, AuthState>(
               builder: (context, state) {
-                if (widget.chatModel.lastMessageSenderId == myId) {
-                  return MessageSeenIndicator(isSeen: isSeen);
+                if (widget.chatModel.lastMessageSenderId == currentUserId) {
+                  return MessageSeenIndicator(
+                    otherUserId: otherUser.uid,
+                    status: widget.chatModel.status,
+                  );
                 }
 
                 return const SizedBox.shrink();

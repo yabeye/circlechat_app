@@ -4,7 +4,6 @@ import 'package:circlechat_app/core/utils/app_converter.dart';
 import 'package:circlechat_app/core/utils/app_formatters.dart';
 import 'package:circlechat_app/core/utils/http_utils.dart';
 import 'package:circlechat_app/data/models/chat_model.dart';
-import 'package:circlechat_app/data/models/user_model.dart';
 import 'package:circlechat_app/presentation/cubit/auth/auth_cubit.dart';
 import 'package:circlechat_app/presentation/widgets/app_widgets/app_image.dart';
 import 'package:circlechat_app/presentation/widgets/message_seen_indicator.dart';
@@ -90,7 +89,8 @@ class MessageCard extends StatelessWidget {
                       ),
                       if (isMe)
                         MessageSeenIndicator(
-                          isSeen: message.isSeen ?? false,
+                          otherUserId: myId ?? '-',
+                          // status: message.status,
                         ),
                     ],
                   ),

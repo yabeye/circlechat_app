@@ -13,7 +13,7 @@ class ChatModel {
     this.lastMessageType,
     this.lastMessageSenderId,
     this.name,
-    this.isSeen = false,
+    this.status,
   });
 
   factory ChatModel.fromJson(Map<String, dynamic> json, {String? id}) {
@@ -36,7 +36,9 @@ class ChatModel {
       lastMessageType: MessageType.values.byName(json['lastMessageType']),
       lastMessageSenderId: json['lastMessageSenderId'] as String?,
       name: json['name'] as String?,
-      isSeen: json['isSeen'] as bool? ?? false,
+      status: json['status'] != null
+          ? MessageStatusModel.fromJson(json['status'] as Map<String, dynamic>)
+          : null,
     );
   }
 
@@ -49,7 +51,7 @@ class ChatModel {
   final MessageType? lastMessageType;
   final String? lastMessageSenderId;
   final String? name;
-  final bool isSeen;
+  final MessageStatusModel? status;
 
   Map<String, dynamic> toJson() {
     return {
@@ -65,7 +67,7 @@ class ChatModel {
       'lastMessageType': lastMessageType?.name,
       'lastMessageSenderId': lastMessageSenderId,
       'name': name,
-      'isSeen': isSeen,
+      'status': status?.toJson(),
     };
   }
 
@@ -81,7 +83,7 @@ class MessageModel {
     this.timestamp,
     this.type,
     this.file,
-    this.isSeen = false,
+    this.status,
   });
 
   factory MessageModel.fromJson(Map<String, dynamic> json, {String? id}) {
@@ -94,27 +96,29 @@ class MessageModel {
       file: json['file'] != null
           ? MessageFileModel.fromJson(json['file'] as Map<String, dynamic>)
           : null,
-      isSeen: json['isSeen'] as bool? ?? false,
+      status: MessageStatus.values.byName(json['status']),
     );
   }
 
-  final String? id;
+  String? id;
   final String? senderId;
   final String? text;
   final Timestamp? timestamp;
   final MessageType? type;
   final MessageFileModel? file;
-  final bool? isSeen;
+  MessageStatus? status;
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson({bool nowTimestamp = false}) {
+    final timestamp =
+        nowTimestamp ? Timestamp.now() : this.timestamp ?? Timestamp.now();
     return {
-      'id': id,
+      // 'id': id,
       'senderId': senderId,
       'text': text,
       'timestamp': timestamp,
       'type': type?.name,
       'file': file,
-      'isSeen': isSeen,
+      'status': status?.name,
     };
   }
 }
@@ -159,6 +163,90 @@ class MessageFileModel {
       'timestamp': timestamp,
       'size': size,
       'duration': duration,
+    };
+  }
+}
+
+// create a message status model //
+/**
+ * {
+ *    "summary": enum MessageStatus , 
+ *    "delivered": {
+ *     "id": {"userId":"abc123" , timestamp: Timestamp},
+ *     "id": {"userId":"abc123" , timestamp: Timestamp},
+ *     "id": {"userId":"abc123" , timestamp: Timestamp},
+ *   
+ *     }, 
+ * *   "seen": {
+ *     "id": {"userId":"abc123" , timestamp: Timestamp},
+ *     "id": {"userId":"abc123" , timestamp: Timestamp},
+ *     "id": {"userId":"abc123" , timestamp: Timestamp},
+ *     }, 
+ * }
+ * 
+ */
+class MessageStatusModel {
+  MessageStatusModel({
+    this.summary,
+    this.delivered = const {},
+    this.seen = const {},
+  });
+
+  factory MessageStatusModel.fromJson(Map<String, dynamic> json) {
+    return MessageStatusModel(
+      summary: json['summary'] != null
+          ? MessageStatus.values.byName(json['summary'])
+          : null,
+      delivered: (json['delivered'] as Map<String, dynamic>?)?.map(
+            (key, value) => MapEntry(
+              key,
+              MessageStatusEntry.fromJson(value as Map<String, dynamic>),
+            ),
+          ) ??
+          {},
+      // seen: (json['seen'] as Map<String, dynamic>?)?.map(
+      //       (key, value) => MapEntry(
+      //         key,
+      //         MessageStatusEntry.fromJson(value as Map<String, dynamic>),
+      //       ),
+      //     ) ??
+      //     {},
+    );
+  }
+
+  MessageStatus? summary;
+  final Map<String, MessageStatusEntry> delivered;
+  final Map<String, MessageStatusEntry> seen;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'summary': summary?.name,
+      'delivered': delivered.map(
+        (key, value) => MapEntry(key, value.toJson()),
+      ),
+      'seen': seen.map(
+        (key, value) => MapEntry(key, value.toJson()),
+      ),
+    };
+  }
+}
+
+class MessageStatusEntry {
+  MessageStatusEntry({
+    this.timestamp,
+  });
+
+  factory MessageStatusEntry.fromJson(Map<String, dynamic> json) {
+    return MessageStatusEntry(
+      timestamp: json['timestamp'] as Timestamp?,
+    );
+  }
+
+  final Timestamp? timestamp;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'timestamp': timestamp,
     };
   }
 }
