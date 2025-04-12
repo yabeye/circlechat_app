@@ -90,7 +90,7 @@ class MessageCard extends StatelessWidget {
                       if (isMe)
                         MessageSeenIndicator(
                           otherUserId: myId ?? '-',
-                          // status: message.status,
+                          status: message.status,
                         ),
                     ],
                   ),

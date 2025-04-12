@@ -219,6 +219,40 @@ class FirebaseService {
     }
   }
 
+  Future<void> updateBulkMessageStatus(
+    String chatId,
+    List<String> messageIds,
+    MessageStatus updateToStatus,
+  ) async {
+    try {
+      final currentUserId = getCurrentUser()?.uid ?? '-';
+      // Loop through messageIds and process them in batches of 500
+      for (var i = 0; i < messageIds.length; i++) {
+        final batch =
+            _firestore.batch(); // Create a new batch for each iteration
+        // Add up to 500 operations to the batch
+        for (var j = i; j < i + 500 && j < messageIds.length; j++) {
+          var messageId = messageIds[j];
+          var messageRef = _firestore
+              .collection('chats')
+              .doc(chatId)
+              .collection('messages')
+              .doc(messageId);
+          batch.update(messageRef, {
+            'status.$updateToStatus.$currentUserId.timestamp':
+                FieldValue.serverTimestamp(),
+          });
+        }
+        // Commit the batch
+        await batch.commit();
+        // Move the index forward by 500 (or the remaining items)
+        i += 499;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<List<MessageModel>> getMessages(String chatId) async {
     final snapshot = await _firestore
         .collection('chats')
@@ -245,7 +279,7 @@ class FirebaseService {
 
   Future<void> sendMessage(String? chatId, MessageModel message) async {
     try {
-      message.status = MessageStatus.sent;
+      message.status?.summary = MessageStatus.sent;
       await _firestore
           .collection('chats')
           .doc(chatId)

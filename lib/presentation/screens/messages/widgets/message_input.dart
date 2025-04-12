@@ -124,7 +124,7 @@ class _MessageInputState extends State<MessageInput> {
               senderId: widget.senderId,
               timestamp: Timestamp.now(),
               type: MessageType.text,
-              status: MessageStatus.sending,
+              status: MessageStatusModel(summary: MessageStatus.sending),
             ),
           );
       _textController.clear();

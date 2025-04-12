@@ -96,7 +96,9 @@ class MessageModel {
       file: json['file'] != null
           ? MessageFileModel.fromJson(json['file'] as Map<String, dynamic>)
           : null,
-      status: MessageStatus.values.byName(json['status']),
+      status: json['status'] != null
+          ? MessageStatusModel.fromJson(json['status'] as Map<String, dynamic>)
+          : null,
     );
   }
 
@@ -106,7 +108,7 @@ class MessageModel {
   final Timestamp? timestamp;
   final MessageType? type;
   final MessageFileModel? file;
-  MessageStatus? status;
+  final MessageStatusModel? status;
 
   Map<String, dynamic> toJson({bool nowTimestamp = false}) {
     final timestamp =
@@ -117,8 +119,8 @@ class MessageModel {
       'text': text,
       'timestamp': timestamp,
       'type': type?.name,
-      'file': file,
-      'status': status?.name,
+      'file': file?.toJson(),
+      'status': status?.toJson(),
     };
   }
 }

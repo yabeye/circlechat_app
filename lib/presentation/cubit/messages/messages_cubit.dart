@@ -20,8 +20,8 @@ class MessagesCubit extends Cubit<MessagesState> {
           _firebaseService.getMessagesStream(chat.id ?? '').listen(
         (messages) {
           emit(MessagesLoaded(chat, messages));
+          updateMessagesStatus(chat);
           syncChatSeen?.call();
-          if (chat.status != MessageStatus.seen) {}
         },
         onError: (error) {
           emit(MessagesError(error.toString()));
@@ -29,6 +29,31 @@ class MessagesCubit extends Cubit<MessagesState> {
       );
     } catch (e) {
       emit(MessagesError(e.toString()));
+    }
+  }
+
+  // update message status
+  Future<void> updateMessagesStatus(ChatModel chat) async {
+    if (state is MessagesLoaded) {
+      try {
+        final currentUserId = _firebaseService.getCurrentUser()?.uid;
+        final messages = (state as MessagesLoaded)
+            .messages
+            .where((e) =>
+                e.senderId != currentUserId &&
+                (e.status?.seen.containsKey(currentUserId) ?? false))
+            .map((e) => e.id ?? '-')
+            .toSet()
+            .toList();
+
+        await _firebaseService.updateBulkMessageStatus(
+          chat.id ?? '-',
+          messages,
+          MessageStatus.seen,
+        );
+      } catch (e) {
+        emit(MessagesError(e.toString()));
+      }
     }
   }
 
